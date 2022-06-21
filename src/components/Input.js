@@ -3,15 +3,14 @@ import {range} from 'lodash'
 
 import {SudokuContext} from '../SudokuContext'
 
-
 export default function Input() {
-	const sudokuContextValue = useContext(SudokuContext)
-	const [selectedValue, setSelectedValue] = sudokuContextValue.sValue
+	const [selectedValue, setSelectedValue] = useContext(SudokuContext)
 
 	useEffect(() => {
 		selectedValue && document.querySelector('.input_cell.active').focus()
 	}, [selectedValue])
 
+	
 	const handleClick = useCallback((e, number) => {
 		if(selectedValue === number) {
 			setSelectedValue(null)

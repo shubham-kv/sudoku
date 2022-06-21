@@ -1,14 +1,17 @@
 import React, {useCallback, useContext} from 'react'
 import {range} from 'lodash'
 
+import SudokuCell from './SudokuCell'
 import {SudokuContext} from '../SudokuContext'
-import {isInvalidCell} from '../sudokuMethods'
 
 
-export default function SudokuSquare({squareRowIndex, squareColIndex, matrixArr}) {
-	const sudokuContextValue = useContext(SudokuContext)	
-	const [selectedValue, setSelectedValue] = sudokuContextValue.sValue
+export default function SudokuSquare(props) {
+	const {
+		svgWidth, svgHeight,
+		squareI, squareJ, matrixArr
+	} = props
 
+	const [selectedValue, setSelectedValue] = useContext(SudokuContext)
 	const [inputMatrix, workingMatrix, setWorkingMatrix] = matrixArr
 	
 	const handleCellClick = useCallback((row, col) => {
@@ -33,44 +36,31 @@ export default function SudokuSquare({squareRowIndex, squareColIndex, matrixArr}
 
 	}, [inputMatrix, workingMatrix, setWorkingMatrix, selectedValue, setSelectedValue])
 
+	const rectWidth = svgWidth/3
+	const rectHeight = svgHeight/3
+	const squareRowIndex = squareI * 3
+	const squareColIndex = squareJ * 3
+
 	return (
-		<div className='sudoku_square'>
+		<g className='sudoku_square'
+			transform={`translate(${squareJ * rectWidth}, ${squareI * rectHeight})`}>
+
 			{
-				range(squareRowIndex, squareRowIndex + 3).map(row => (
-					range(squareColIndex, squareColIndex + 3).map(col => {
-
-						const value = workingMatrix[row][col]
-						const elClassList = ['sudoku_cell']
-
-						if(inputMatrix[row][col] !== 0) {
-							elClassList.push('unmodifiable')
-						}
-
-						if(value !== 0) {
-							if(value === selectedValue) {
-								elClassList.push('highlighted')
-							}
-
-							if(isInvalidCell(inputMatrix, workingMatrix, {row, col})) {
-								elClassList.push('incorrect')
-							}
-						}
-
-						return (
-							<div
-								key={`sudoku_cell_wrapper_${row}${col}`}
-								className={'sudoku_cell_wrapper'}
-								onMouseDown={e => e.preventDefault()}
-								onClick={() => handleCellClick(row, col)}
-								>
-								<div className={elClassList.join(' ')}>
-									{(value === 0) ? '' : value}
-								</div>
-							</div>
-						)
-					})
+				range(squareRowIndex, squareRowIndex + 3).map((row, i) => (
+					range(squareColIndex, squareColIndex + 3).map((col, j) => (
+						<SudokuCell
+							key={`sudoku_cell_${row}${col}`}
+							cellI={i}
+							cellJ={j}
+							row={row} col={col}
+							inputMatrix={inputMatrix}
+							workingMatrix={workingMatrix}
+							selectedValue={selectedValue}
+							clickHandler={() => handleCellClick(row, col)}
+							/>
+					))
 				))
 			}
-		</div>
+		</g>
 	)
 }
