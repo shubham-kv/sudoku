@@ -1,12 +1,12 @@
 import React, {useCallback, useContext} from 'react'
 import {range} from 'lodash'
 
-import {AppContext} from '../AppContext'
+import {SudokuContext} from '../SudokuContext'
 
 
 export default function Input() {
-	const appContextValue = useContext(AppContext)
-	const [selectedValue, setSelectedValue] = appContextValue.sValue
+	const sudokuContextValue = useContext(SudokuContext)
+	const [selectedValue, setSelectedValue] = sudokuContextValue.sValue
 
 	const handleClick = useCallback((e, number) => {
 		if(selectedValue === number) {

@@ -1,13 +1,13 @@
 import React, {useCallback, useContext} from 'react'
 import {range} from 'lodash'
 
-import {AppContext} from '../AppContext'
+import {SudokuContext} from '../SudokuContext'
 import {isInvalidCell} from '../sudokuMethods'
 
 
 export default function SudokuSquare({squareRowIndex, squareColIndex, matrixArr}) {
-	const appContextValue = useContext(AppContext)	
-	const [selectedValue, setSelectedValue] = appContextValue.sValue
+	const sudokuContextValue = useContext(SudokuContext)	
+	const [selectedValue, setSelectedValue] = sudokuContextValue.sValue
 
 	const [inputMatrix, workingMatrix, setWorkingMatrix] = matrixArr
 	

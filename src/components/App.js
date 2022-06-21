@@ -1,12 +1,13 @@
 import React, {useContext, useRef} from 'react'
+
 import Sudoku from './Sudoku'
 import Input from './Input'
-import {AppContext} from '../AppContext'
+import {SudokuContext} from '../SudokuContext'
 import {useOutsideClickHandler} from '../customHooks'
 
 export default function App() {
-	const appContextValue = useContext(AppContext)
-	const [, setSelectedValue] = appContextValue.sValue
+	const sudokuContextValue = useContext(SudokuContext)
+	const [, setSelectedValue] = sudokuContextValue.sValue
 
 	const mainRef = useRef(null)
 	const outsideClickHandler = () => setSelectedValue(null)

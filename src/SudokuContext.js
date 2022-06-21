@@ -1,8 +1,8 @@
 import React, {createContext, useState} from 'react'
 
-const AppContext = createContext()
+const SudokuContext = createContext()
 
-const AppContextProvider = ({children}) => {
+const SudokuContextProvider = ({children}) => {
 	const [selectedValue, setSelectedValue] = useState(null)
 	const [selectedRow, setSelectedRow] = useState(null)
 	const [selectedCol, setSelectedCol] = useState(null)
@@ -14,10 +14,10 @@ const AppContextProvider = ({children}) => {
 	}
 
 	return (
-		<AppContext.Provider value={value}>
+		<SudokuContext.Provider value={value}>
 			{children}
-		</AppContext.Provider>
+		</SudokuContext.Provider>
 	)
 }
 
-export {AppContext, AppContextProvider}
+export {SudokuContext, SudokuContextProvider}
