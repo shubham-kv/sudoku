@@ -2,7 +2,7 @@ import React from 'react'
 import {range} from 'lodash'
 
 import SudokuSquare from './SudokuSquare'
-import {useSudokuMatrix} from '../CustomHooks'
+import {useSudokuMatrix} from '../customHooks'
 
 export default function Sudoku() {
 	const [inputMatrix, workingMatrix, setWorkingMatrix] = useSudokuMatrix()

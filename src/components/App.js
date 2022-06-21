@@ -2,7 +2,7 @@ import React, {useContext, useRef} from 'react'
 import Sudoku from './Sudoku'
 import Input from './Input'
 import {AppContext} from '../AppContext'
-import {useOutsideClickHandler} from '../CustomHooks'
+import {useOutsideClickHandler} from '../customHooks'
 
 export default function App() {
 	const appContextValue = useContext(AppContext)
