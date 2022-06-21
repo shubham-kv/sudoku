@@ -1,4 +1,4 @@
-import React, {useCallback, useContext} from 'react'
+import React, {useCallback, useContext, useEffect} from 'react'
 import {range} from 'lodash'
 
 import {SudokuContext} from '../SudokuContext'
@@ -7,6 +7,10 @@ import {SudokuContext} from '../SudokuContext'
 export default function Input() {
 	const sudokuContextValue = useContext(SudokuContext)
 	const [selectedValue, setSelectedValue] = sudokuContextValue.sValue
+
+	useEffect(() => {
+		selectedValue && document.querySelector('.input_cell.active').focus()
+	}, [selectedValue])
 
 	const handleClick = useCallback((e, number) => {
 		if(selectedValue === number) {
@@ -18,34 +22,20 @@ export default function Input() {
 		}
 	}, [selectedValue, setSelectedValue])
 
-	// set value to null on losing focus
-	const handleBlur = useCallback((e) => {
-		if(document.activeElement.classList.contains('input__cell')) {
-			setSelectedValue(null)
-		}
-	}, [setSelectedValue])
-
-	document.querySelectorAll('.input__cell').forEach(el => {
-		if(Number(el.innerText) === selectedValue) {
-			el.focus()
-		}
-	})
 
 	return (
 		<div className='number_input'>
 			{
 				range(1, 9 + 1).map(number => (
-					<button
-						key={number}
-						className='input__cell'
+					<button key={number}
+						className={(selectedValue === number) ? 'input_cell active' : 'input_cell'}
 						onClick={(e) => handleClick(e, number)}
-						onBlur={handleBlur}
 						>
 						{number}
 					</button>
 				))
 			}
-			<button className='input__cell' onClick={() => setSelectedValue(0)}>
+			<button className='input_cell' onClick={() => setSelectedValue(0)}>
 				x
 			</button>
 		</div>

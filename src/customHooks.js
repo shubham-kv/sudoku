@@ -2,21 +2,6 @@ import {useEffect, useState} from 'react'
 import {randomize, solveMatrix, removeCells} from './sudokuMethods'
 import {deepCopy, genEmptySudokuMatrix} from './utils'
 
-export const useOutsideClickHandler = (ref, outsideClickHandler) => {
-	useEffect(() => {
-		const clickHandler = (e) => {
-			if(ref && !ref.current.contains(e.target)) {
-				outsideClickHandler()
-			}
-		}
-		document.addEventListener('click', clickHandler)
-
-		return () => {
-			document.removeEventListener('click', clickHandler)
-		}
-	}, [ref, outsideClickHandler])
-}
-
 export const useSudokuMatrix = () => {
 	const [inputMatrix, setInputMatrix] = useState(genEmptySudokuMatrix())
 	const [workingMatrix, setWorkingMatrix] = useState(genEmptySudokuMatrix())

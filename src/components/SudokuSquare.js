@@ -34,33 +34,32 @@ export default function SudokuSquare({squareRowIndex, squareColIndex, matrixArr}
 	}, [inputMatrix, workingMatrix, setWorkingMatrix, selectedValue, setSelectedValue])
 
 	return (
-		<div className='sudoku__square'>
+		<div className='sudoku_square'>
 			{
 				range(squareRowIndex, squareRowIndex + 3).map(row => (
 					range(squareColIndex, squareColIndex + 3).map(col => {
 
 						const value = workingMatrix[row][col]
-						const wrapperClassList = ['sudoku__cell_wrapper']
-						const elClassList = ['sudoku__cell']
+						const elClassList = ['sudoku_cell']
 
 						if(inputMatrix[row][col] !== 0) {
-							elClassList.push('sudoku__cell--unmodifiable')
+							elClassList.push('unmodifiable')
 						}
 
 						if(value !== 0) {
 							if(value === selectedValue) {
-								elClassList.push('sudoku__cell--highlighted')
+								elClassList.push('highlighted')
 							}
 
 							if(isInvalidCell(inputMatrix, workingMatrix, {row, col})) {
-								elClassList.push('sudoku__cell--incorrect')
+								elClassList.push('incorrect')
 							}
 						}
 
 						return (
 							<div
 								key={`sudoku_cell_wrapper_${row}${col}`}
-								className={wrapperClassList.join(' ')}
+								className={'sudoku_cell_wrapper'}
 								onMouseDown={e => e.preventDefault()}
 								onClick={() => handleCellClick(row, col)}
 								>

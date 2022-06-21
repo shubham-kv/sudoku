@@ -1,0 +1,132 @@
+@import './variables';
+
+@mixin GridCenter {
+	display: grid;
+	place-items: center;
+}
+
+body {
+	color: $foreground_nom;
+	background-color: $background_color;
+}
+
+.app {
+	width: 100vw;
+	min-height: 100vh;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 90%;
+	margin: auto;
+	max-width: 600px;
+}
+
+
+.sudoku_board {
+	display: inline-grid;
+	grid-template-columns: auto auto auto;
+	margin: 2rem 0;
+	font-size: 1.2rem;
+}
+
+.sudoku_square {
+	display: inline-grid;
+	grid-template-columns: auto auto auto;
+	padding: 4px;
+
+	$border_style: rgba($primary_color, 0.9) solid 2px;
+
+	&:nth-child(4), &:nth-child(5), &:nth-child(6) {
+		border-top: $border_style;
+		border-bottom: $border_style;
+	}
+
+	&:nth-child(2), &:nth-child(5), &:nth-child(8) {
+		border-left: $border_style;
+		border-right: $border_style;
+	}
+}
+
+
+.sudoku_cell {
+	@include GridCenter();
+
+	width:  2.8rem;
+	height: 2.8rem;
+	margin: 2px;
+
+	user-select: none;
+	border-radius: 50%;
+	transition: all 0.4s ease;
+	animation: Grow 0.2s ease-in forwards;
+
+	&.unmodifiable {
+		color: $foreground_high;
+		background-color: $surface_color;
+	}
+
+	&.highlighted {
+		color: $on_primary;
+		background-color: $primary_color;
+	}
+
+	&.incorrect {
+		color: $error_color;
+		background-color: rgba(176, 0, 0, 0.3);
+	}
+}
+
+@keyframes Grow {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+
+.number_input {
+	display: inline-grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	gap: 1.5rem;
+}
+
+.input_cell {
+	width:  3.5rem;
+	height: 3.5rem;
+
+	outline: none;
+	user-select: none;
+	background: none;
+
+	font-size: 1.5rem;
+	color: $foreground_nom;
+	border-radius: 50%;
+	border: 2px solid rgba(255, 255, 255, 0.12);
+
+	transition: all 0.2s ease;
+	animation: Grow 0.2s ease-in forwards;
+
+	&:hover {
+		color: #f0f0f0;
+		border-color: $primary_color;
+		background-color: rgb($primary_color, 0.2);
+	}
+
+	&:focus {
+		color: #f0f0f0;
+		border-color: $primary_color;
+		background-color: rgba($primary_color, 0.4);
+	}
+
+	&.active {
+		color: $on_primary;
+		border-color: $primary_color;
+		background-color: $primary_color;
+		box-shadow: 0 0 30px 5px rgba($primary_color, 0.6);
+	}
+}

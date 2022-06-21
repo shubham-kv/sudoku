@@ -1,0 +1,20 @@
+$neon_purple:	#C724B1;
+$neon_yellow:	#c7cc36;
+$neon_orange:	#b88a29;
+$neon_green:	#64af59;
+$neon_blue:		#8989ff;
+$neon_cyan:		#27c3c3;
+
+$primary_color: $neon_cyan;
+$error_color: 		#d55959;
+$background_color:	#121212;
+$surface_color:		#242424;
+
+$on_primary:	#121212;
+$on_surface:	#F0F0F0;
+$on_background:	#F0F0F0;
+$on_error:		#F0F0F0;
+
+$foreground_low: rgba($on_background, 0.40);
+$foreground_nom: rgba($on_background, 0.60);
+$foreground_high: rgba($on_background, 0.80);
