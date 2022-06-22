@@ -9,14 +9,18 @@ export default function SudokuBgBars() {
 	const isActive = (selectedValue) && (selectedValue !== 0)
 
 	useEffect(() => {
-		const resizeListener = () => {
+		const svgRectChangeListener = () => {
 			const svg = document.querySelector('svg.sudoku_svg')
 			setSvgRect(svg.getBoundingClientRect())
 		}
-		resizeListener()
-		window.addEventListener('resize', resizeListener)
+		svgRectChangeListener()
+		window.addEventListener('resize', svgRectChangeListener)
+		window.addEventListener('scroll', svgRectChangeListener)
 
-		return () => window.removeEventListener('resize', resizeListener)
+		return () => {
+			window.removeEventListener('resize', svgRectChangeListener)
+			window.removeEventListener('scroll', svgRectChangeListener)
+		}
 	}, [])
 
 	if(svgRect === null) {

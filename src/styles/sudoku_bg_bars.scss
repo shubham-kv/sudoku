@@ -12,6 +12,7 @@
 			0 0 5px 1px white,
 			0 0 30px 5px rgba(white, 0.2),
 			0 0 30px 5px rgba(white, 0.4);
+		transition: all 0.2s ease;
 
 		&:nth-child(1), &:nth-child(2) {
 			width: 1px;
