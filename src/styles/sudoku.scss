@@ -2,13 +2,15 @@
 
 .sudoku_svg {
 	max-width: 500px;
-	margin: 2.5rem 0;
-	padding: 0.5rem;
-	border-radius: 1.5rem;
-	border: 2px solid rgba($white, 0.025);
-	background-color: rgba($white, 0.025);
-	transition: all 0.2s ease;
+	margin: 3rem 0;
 
+	border-radius: 2rem;
+	border: 2px solid rgba(white, 0.025);
+	background-color: rgba(white, 0.025);
+	
+	backdrop-filter: blur(28px);
+	transition: all 0.2s ease;
+	
 	&.active {
 		border-color: rgba($primary_color, 0.1);
 		background-color: rgba($primary_color, 0.05);
@@ -16,12 +18,6 @@
 		box-shadow:
 			0 0 15px 5px rgba($primary_color, 0.05),
 			0 0 30px 10px rgba($primary_color, 0.05);
-
-		.lines_g {
-			line {
-				stroke: $primary_color;
-			}
-		}
 	}
 }
 
@@ -34,20 +30,22 @@
 		user-select: none;
 		fill: $foreground_high;
 		font-size: 0.9rem;
-
 		text-anchor: middle;
 		dominant-baseline: central;
 	}
 
 	&.unmodifiable {
 		circle {
-			fill: rgba($surface_color, 0.9);
+			// fill: rgba($surface_color, 0.9);
+			fill: rgba(white, 0.1);
+			stroke: rgba(white, 0.1);
+			stroke-width: 0.5;
 		}
 	}
 
 	&.highlighted {
 		circle {
-			fill: $primary_color;
+			fill: rgba($primary_color, 1);
 		}
 		text {
 			fill: $on_primary;
@@ -61,12 +59,5 @@
 		text {
 			fill: $error_color;
 		}
-	}
-}
-
-.lines_g {
-	line {
-		stroke: rgba($white, 0.4);
-		transition: all 0.4s ease;
 	}
 }

@@ -1,16 +1,17 @@
-import React, {useCallback, useContext, useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
+import {useSpring, animated} from '@react-spring/web'
 import {range} from 'lodash'
 
-import {SudokuContext} from '../SudokuContext'
+import {useSudokuContext} from 'SudokuContext'
+
 
 export default function Input() {
-	const [selectedValue, setSelectedValue] = useContext(SudokuContext)
+	const {selectedValue, setSelectedValue} = useSudokuContext()
 
 	useEffect(() => {
 		selectedValue && document.querySelector('.input_cell.active').focus()
 	}, [selectedValue])
 
-	
 	const handleClick = useCallback((e, number) => {
 		if(selectedValue === number) {
 			setSelectedValue(null)
@@ -22,21 +23,30 @@ export default function Input() {
 	}, [selectedValue, setSelectedValue])
 
 
+	const props = useSpring({
+		from: {opacity: 0},
+		to: {opacity: 1},
+		delay: 200
+	})
+
 	return (
-		<div className='number_input'>
+		<animated.div style={props} className='number_input'>
 			{
-				range(1, 9 + 1).map(number => (
-					<button key={number}
-						className={(selectedValue === number) ? 'input_cell active' : 'input_cell'}
-						onClick={(e) => handleClick(e, number)}
-						>
-						{number}
-					</button>
-				))
+				range(1, 9 + 1).map(number => {
+					return (
+						<button
+							key={number}
+							className={(selectedValue === number) ? 'input_cell active' : 'input_cell'}
+							onClick={(e) => handleClick(e, number)}
+							>
+							{number}
+						</button>
+					)
+				})
 			}
 			<button className='input_cell' onClick={() => setSelectedValue(0)}>
 				x
 			</button>
-		</div>
+		</animated.div>
 	)
 }

@@ -1,16 +1,41 @@
-import React from 'react'
-
-import {isInvalidCell} from '../sudokuMethods'
+import React, {useCallback} from 'react'
+import {useSudokuContext} from 'SudokuContext'
+import {isInvalidCell} from 'sudokuMethods'
 
 
 export default function SudokuCell(props) {
 	const {
-		cellI, cellJ,
 		row, col,
-		inputMatrix, workingMatrix,
-		selectedValue,
-		clickHandler
+		innerWidth, innerHeight, gridGap
 	} = props
+
+	const sudokuContextValue = useSudokuContext()
+	const {
+		selectedValue, setSelectedValue,
+		inputMatrix, workingMatrix, setWorkingMatrix
+	} = sudokuContextValue
+
+	const handleCellClick = useCallback((row, col) => {
+		if(selectedValue || selectedValue === 0) {
+			if(inputMatrix[row][col] === 0) {
+				const newMatrix = Array.from(workingMatrix)
+
+				newMatrix[row][col] = 
+					(workingMatrix[row][col] === selectedValue)
+					? 0
+					: selectedValue
+
+				setWorkingMatrix(newMatrix)
+			}
+			else {
+				setSelectedValue(inputMatrix[row][col])
+			}
+		}
+		else {
+			setSelectedValue(workingMatrix[row][col])
+		}
+	}, [inputMatrix, workingMatrix, setWorkingMatrix, selectedValue, setSelectedValue])
+
 
 	const value = workingMatrix[row][col]
 	const cellClassArr = ['sudoku_cell_g']
@@ -31,35 +56,43 @@ export default function SudokuCell(props) {
 
 	const sudokuCellClassName = cellClassArr.join(' ')
 
-	const cellOuterWidth = 100/3, cellOuterHeight = 100/3
-	const halfCellOuterWidth = cellOuterWidth/2, HalfCellOuterHeight = cellOuterHeight/2
+	const cellOuterWidth = (innerWidth - 2 * gridGap) / 9
+	const cellOuterHeight = (innerHeight - 2 * gridGap) / 9
 	const circleMargin = 2
-	const radius = cellOuterWidth/2 - circleMargin
+	const radius = cellOuterWidth / 2 - circleMargin
+
+	const translateX = col * cellOuterWidth + (parseInt(col / 3) * gridGap)
+	const translateY = row * cellOuterHeight + (parseInt(row / 3) * gridGap)
 	
 	return (
 		<g className={sudokuCellClassName}
-			transform={`translate(${cellJ * cellOuterWidth}, ${cellI * cellOuterHeight})`}>
+			transform={`translate(${translateX}, ${translateY})`}>
 
 			{
-				((inputMatrix[row][col] !== 0) || cellClassArr.includes('highlighted')) &&
+				((inputMatrix[row][col] !== 0) || cellClassArr.includes('highlighted'))
+				? (
 					<circle 
-						cx={halfCellOuterWidth}
-						cy={HalfCellOuterHeight}
-						r={radius}
-						/>
+						cx={cellOuterWidth/2}
+						cy={cellOuterHeight/2}
+						r={radius} />
+				)
+				: null
 			}
 			
 			{
-				value &&
-					<text x={halfCellOuterWidth} y={HalfCellOuterHeight}>
+				(value)
+				? (
+					<text x={cellOuterWidth/2} y={cellOuterHeight/2}>
 						{value}
 					</text>
+				)
+				: null
 			}
 
 			<rect
 				fill='transparent'
 				width={cellOuterWidth} height={cellOuterHeight}
-				onClick={clickHandler}
+				onClick={() => handleCellClick(row, col)}
 				/>
 		</g>
 	)

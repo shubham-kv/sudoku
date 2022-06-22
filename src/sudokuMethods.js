@@ -139,7 +139,6 @@ export const removeCells = (matrix, totalCellsToRemove) => {
 	let deletedCellCount = 0, iterationCount = 0;
 
 	while((deletedCellCount < totalCellsToRemove)) {
-		// console.log('removeCells')
 		iterationCount++;
 
 		if(deletedCellCount === 0 && iterationCount > totalCellsToRemove) {

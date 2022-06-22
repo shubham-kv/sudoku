@@ -1,12 +1,14 @@
 import React from 'react'
 
-import Sudoku from './Sudoku'
-import Input from './Input'
+import SudokuBgBars from 'components/SudokuBgBars'
+import Sudoku from 'components/Sudoku'
+import Input from 'components/Input'
 
 export default function App() {
 	return (
 		<div className='app'>
 			<main>
+				<SudokuBgBars />
 				<Sudoku />
 				<Input />
 			</main>
