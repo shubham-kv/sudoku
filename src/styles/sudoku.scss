@@ -7,9 +7,7 @@
 	border-radius: 2rem;
 	border: 2px solid rgba(white, 0.025);
 	background-color: rgba(white, 0.025);
-	
 	backdrop-filter: blur(28px);
-	transition: all 0.2s ease;
 	
 	&.active {
 		border-color: rgba($primary_color, 0.1);
@@ -19,11 +17,19 @@
 			0 0 15px 5px rgba($primary_color, 0.05),
 			0 0 30px 10px rgba($primary_color, 0.05);
 	}
+
+	@media screen and (min-width: $min_large_device_width) {
+		& {
+			transition: all 0.2s ease;
+		}
+	}
 }
 
 .sudoku_cell_g {
-	circle, text {
-		transition: all 0.4s ease;
+	@media screen and (min-width: $min_large_device_width) {
+		circle, text {
+			transition: all 0.2s ease;
+		}
 	}
 
 	text {
@@ -36,7 +42,6 @@
 
 	&.unmodifiable {
 		circle {
-			// fill: rgba($surface_color, 0.9);
 			fill: rgba(white, 0.1);
 			stroke: rgba(white, 0.1);
 			stroke-width: 0.5;

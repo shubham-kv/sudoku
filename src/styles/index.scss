@@ -39,7 +39,10 @@ main {
 	color: $foreground_nom;
 	border-radius: 50%;
 	border: 2px solid rgba(white, 0.12);
-	transition: all 0.2s ease;
+
+	@media screen and (min-width: $min_large_device_width) {
+		transition: all 0.2s ease;		
+	}
 
 	&:hover {
 		color: $foreground_high;
