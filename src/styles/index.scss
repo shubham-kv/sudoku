@@ -27,8 +27,8 @@ main {
 
 .input_cell {
 	flex-basis: 20%;
-	max-width:  3rem;
-	height: 3rem;
+	max-width: 3.5rem;
+	height: 3.5rem;
 	margin: 0.6rem;
 
 	outline: none;
@@ -41,7 +41,9 @@ main {
 	border: 2px solid rgba(white, 0.12);
 
 	@media screen and (min-width: $min_large_device_width) {
-		transition: all 0.2s ease;		
+		& {
+			transition: all 0.2s ease;
+		}
 	}
 
 	&:hover {

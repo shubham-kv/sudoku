@@ -1,6 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import {randomize, solveMatrix, removeCells} from 'sudokuMethods'
 import {deepCopy, genEmptySudokuMatrix} from 'utils'
+
+import {genSudokuMatrix} from 'sudokuHelpers'
 
 
 const useSudokuMatrix = () => {
@@ -9,33 +10,36 @@ const useSudokuMatrix = () => {
 
 	useEffect(() => {
 		const loadMatrix = async () => {
-			const randomized = randomize(genEmptySudokuMatrix())
-			const newMatrix = await solveMatrix(randomized)
-			removeCells(newMatrix, 40)
-			setInputMatrix(deepCopy(newMatrix))
-			setWorkingMatrix(deepCopy(newMatrix))
+			const matrix = await genSudokuMatrix(1)
+			setInputMatrix(deepCopy(matrix))
+			setWorkingMatrix(deepCopy(matrix))
 		}
 		loadMatrix()
 	}, [])
 
-	return {inputMatrix, workingMatrix, setWorkingMatrix}
+	return {inputMatrix, setInputMatrix, workingMatrix, setWorkingMatrix}
 }
 
 export const SudokuContext = createContext({
 	selectedValue:		undefined,
-	setSelectedValue:	undefined,
-	inputMatrix:		undefined,
-	workingMatrix:		undefined,
-	setWorkingMatrix:	undefined
+	setSelectedValue:	null,
+	inputMatrix:		null,
+	workingMatrix:		null,
+	setWorkingMatrix:	null
 })
 
 export const SudokuContextProvider = ({children}) => {
 	const [selectedValue, setSelectedValue] = useState(null)
-	const {inputMatrix, workingMatrix, setWorkingMatrix} = useSudokuMatrix()
+	const {inputMatrix, setInputMatrix, workingMatrix, setWorkingMatrix} = useSudokuMatrix()
+
+	// true when the sudoku filled correctly aka game won
+	const [gameComplete, setGameComplete] = useState(false)
 
 	const value = {
 		selectedValue, setSelectedValue,
-		inputMatrix, workingMatrix, setWorkingMatrix
+		inputMatrix, setInputMatrix,
+		workingMatrix, setWorkingMatrix,
+		gameComplete, setGameComplete
 	}
 
 	return (
@@ -48,7 +52,9 @@ export const SudokuContextProvider = ({children}) => {
 export const useSudokuContext = () => {
 	const {
 		selectedValue, setSelectedValue,
-		inputMatrix, workingMatrix, setWorkingMatrix
+		inputMatrix, setInputMatrix,
+		workingMatrix, setWorkingMatrix,
+		gameComplete, setGameComplete
 	} = useContext(SudokuContext)
 
 	useEffect(() => {
@@ -59,6 +65,8 @@ export const useSudokuContext = () => {
 
 	return {
 		selectedValue, setSelectedValue,
-		inputMatrix, workingMatrix, setWorkingMatrix
+		inputMatrix, setInputMatrix,
+		workingMatrix, setWorkingMatrix,
+		gameComplete, setGameComplete
 	}
 }

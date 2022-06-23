@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 import App from 'components/App'
-import {SudokuContextProvider} from 'SudokuContext'
+import {SudokuContextProvider} from 'contexts/SudokuContext'
 
 import 'styles/default.scss'
 import 'styles/index.scss'

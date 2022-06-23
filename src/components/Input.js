@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react'
 import {useSpring, animated} from '@react-spring/web'
 import {range} from 'lodash'
 
-import {useSudokuContext} from 'SudokuContext'
+import {useSudokuContext} from 'contexts/SudokuContext'
 
 
 export default function Input() {

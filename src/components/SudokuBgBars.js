@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {useSudokuContext} from 'SudokuContext'
+import {useSudokuContext} from 'contexts/SudokuContext'
 
 import 'styles/sudoku_bg_bars.scss'
 
