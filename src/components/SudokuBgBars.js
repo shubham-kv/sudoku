@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 
 import {useSudokuContext} from 'contexts/SudokuContext'
 
@@ -8,16 +8,18 @@ import 'styles/sudoku_bg_bars.scss'
 export default function SudokuBgBars() {
 	const {selectedValue} = useSudokuContext()
 	const [svgRect, setSvgRect] = useState(null)
+	const [timeoutId, setTimeoutId] = useState(null)
 	
-	let timeoutId;
-	
-	const svgRectChangeListener = () => {
+	const svgRectChangeListener = useCallback(() => {
 		clearTimeout(timeoutId)
-		timeoutId = setTimeout(() => {
+
+		const id = setTimeout(() => {
 			const svg = document.querySelector('svg.sudoku_svg')
 			setSvgRect(svg.getBoundingClientRect())
 		}, 30)
-	}
+
+		setTimeoutId(id)
+	}, [timeoutId, setTimeoutId])
 
 	useEffect(() => {
 		svgRectChangeListener()
@@ -28,7 +30,7 @@ export default function SudokuBgBars() {
 			window.removeEventListener('resize', svgRectChangeListener)
 			window.removeEventListener('scroll', svgRectChangeListener)
 		}
-	}, [])
+	}, [svgRectChangeListener])
 
 	if(svgRect === null) {
 		return null
