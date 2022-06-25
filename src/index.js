@@ -7,6 +7,7 @@ import {SudokuContextProvider} from 'contexts/SudokuContext'
 import 'styles/default.scss'
 import 'styles/index.scss'
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
 	<React.StrictMode>

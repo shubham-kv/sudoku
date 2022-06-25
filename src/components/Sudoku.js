@@ -1,10 +1,13 @@
-import React, {useEffect, useState} from 'react'
-import {useSprings, animated} from '@react-spring/web'
+import React, {useCallback, useEffect, useState} from 'react'
+import {useSprings, animated, useSpring} from '@react-spring/web'
+import {range} from 'lodash'
 
 import SudokuFgBars from 'components/SudokuFgBars'
 import SudokuCell from 'components/SudokuCell'
 import {useSudokuContext} from 'contexts/SudokuContext'
-import {getEmptyCell, validateSudokuMatrix} from 'sudokuHelpers'
+
+import {getAllEmptyCells, getFirstEmptyCell, validateSudokuMatrix} from 'sudokuHelpers'
+import {deepCopy} from 'myUtils'
 
 import 'styles/sudoku.scss'
 
@@ -15,22 +18,179 @@ export default function Sudoku() {
 	const sudokuContextValue = useSudokuContext()
     const {
 		selectedValue, setSelectedValue,
-		setInputMatrix,
-		workingMatrix,
+		inputMatrix, workingMatrix, setWorkingMatrix,
 		gameComplete, setGameComplete
 	} = sudokuContextValue
 
-	useEffect(() => {
-		setToggle(true)
-	}, [])
+	const [focusedCell, setFocusedCell] = useState(null)
+	const [emptyCells, setEmptyCells] = useState([])
 
 	useEffect(() => {
-		if(getEmptyCell(workingMatrix) === null) {
+		setToggle(true)
+		setEmptyCells(getAllEmptyCells(inputMatrix))
+
+		// create a timer
+	}, [inputMatrix])
+
+
+	const keyupListener = useCallback((e) => {
+		if(range(1, 10).includes(Number(e.key))) {
+			const pressedNumber = Number(e.key)
+
+			if(focusedCell !== null) {
+				const {row, col} = focusedCell
+				const newWorkingMatrix = deepCopy(workingMatrix)
+				newWorkingMatrix[row][col] =
+					(workingMatrix[row][col] === pressedNumber)
+					? 0
+					: pressedNumber
+				setWorkingMatrix(newWorkingMatrix)
+				setSelectedValue(pressedNumber)
+			}
+			else {
+				setSelectedValue((selectedValue === pressedNumber) ? null : pressedNumber)
+			}	
+		}
+
+	}, [selectedValue, setSelectedValue, workingMatrix, setWorkingMatrix, focusedCell])
+
+
+
+	const keydownListener = useCallback((e) => {
+		switch(e.key) {
+			case 'ArrowLeft': {
+				if(focusedCell === null) {
+					// set focused cell to the last empty cell
+					if(emptyCells.length > 0) {
+						setFocusedCell(emptyCells[emptyCells.length - 1])
+					}
+				}
+				else {
+					// set focused cell to the empty cell just before focused cell
+					const {row, col} = focusedCell
+					const index = emptyCells.findIndex(v => v.row === row && v.col === col)
+
+					if(index !== -1) {
+						const newIndex = (index - 1 < 0) ? (emptyCells.length - 1) : (index - 1)
+						setFocusedCell(emptyCells[newIndex])
+					}
+				}
+				break
+			}
+
+			case 'ArrowRight': {
+				if(focusedCell === null) {
+					// set focused cell to the first empty cell
+					if(emptyCells.length > 0) {
+						setFocusedCell(emptyCells[0])
+					}
+				}
+				else {
+					// set focused cell to the empty cell just after focused cell
+					const {row, col} = focusedCell
+					const index = emptyCells.findIndex(v => v.row === row && v.col === col)
+
+					if(index !== -1) {
+						const newIndex = (index + 1 >= emptyCells.length) ? 0 : (index + 1)
+						setFocusedCell(emptyCells[newIndex])
+					}
+				}
+				break
+			}
+			case 'ArrowUp': {
+				if(focusedCell === null) {
+					// set focused cell to the last empty cell
+					if(emptyCells.length > 0) {
+						setFocusedCell(emptyCells[emptyCells.length - 1])
+					}
+				}
+				else {
+					// set focused cell to the empty cell just above the focused cell
+					// or the last empty cell
+					const {row, col} = focusedCell
+					
+					// sort cells in asc order acc. to col
+					const sortedEmptyCells = deepCopy(emptyCells).sort((a, b) => a.col - b.col)
+
+					const focusedCellIndex = sortedEmptyCells.findIndex(v => v.row === row && v.col === col)
+
+					if(focusedCellIndex === 0) {
+						setFocusedCell(sortedEmptyCells[sortedEmptyCells.length - 1])
+					}
+					else {
+						// find index of the prev empty cell in current col or the last in prev col
+						let index = sortedEmptyCells.findLastIndex(
+							v => ((v.row < row && v.col === col) || (v.col < col))
+						)
+						
+						if(index !== -1) {
+							setFocusedCell(sortedEmptyCells[index])
+						}
+					}
+				}
+
+				break
+			}
+			case 'ArrowDown': {
+				if(focusedCell === null) {
+					// set focused cell to the first empty cell
+					if(emptyCells.length > 0) {
+						setFocusedCell(emptyCells[0])
+					}
+				}
+				else {
+					// set focused cell to the empty cell just below the focused cell
+					// or the first one
+					const {row, col} = focusedCell
+					
+					// sort cells in asc order acc. to col
+					const sortedEmptyCells = deepCopy(emptyCells).sort((a, b) => a.col - b.col)
+
+					const focusedCellIndex = sortedEmptyCells.findIndex(v => v.row === row && v.col === col)
+
+					if(focusedCellIndex === sortedEmptyCells.length - 1) {
+						setFocusedCell(sortedEmptyCells[0])
+						return
+					}
+					else {
+						// find index of next empty cell in current col or the first in next col
+						const newFocusedCellIndex = sortedEmptyCells.findIndex(
+							v => ((v.row > row && v.col === col) || (v.col > col))
+						)
+
+						if(newFocusedCellIndex !== -1) {
+							setFocusedCell(sortedEmptyCells[newFocusedCellIndex])
+						}
+					}
+				}
+				break
+			}
+
+			default:
+				break
+		}
+
+	}, [emptyCells, focusedCell, setFocusedCell])
+
+	useEffect(() => {
+		document.addEventListener('keydown', keydownListener)
+		document.addEventListener('keyup', keyupListener)
+		return () => {
+			document.removeEventListener('keydown', keydownListener)
+			document.removeEventListener('keyup', keyupListener)
+		}
+	}, [keydownListener, keyupListener])
+
+
+	useEffect(() => {
+		if(getFirstEmptyCell(workingMatrix) === null) {
 			if(validateSudokuMatrix(workingMatrix)) {
 				setGameComplete(true)
+				setSelectedValue(null)
+				setFocusedCell(null)
 			}
 		}
-	}, [setSelectedValue, setInputMatrix, workingMatrix, setGameComplete])
+	}, [workingMatrix, setGameComplete, setSelectedValue])
 
 	useEffect(() => {
 		if(gameComplete) {
@@ -46,7 +206,7 @@ export default function Sudoku() {
 						setSelectedValue(null)
 						clearInterval(intervalId)
 					}
-				}, 800)
+				}, 1000)
 			})()
 		}
 	}, [gameComplete, setSelectedValue])
@@ -54,11 +214,12 @@ export default function Sudoku() {
 
 	const svgWidth = 300
     const svgHeight = 300
-	const margin = 10
+	const margin = 4
 	const innerWidth = svgWidth - (2 * margin)
 	const innerHeight = svgHeight - (2 * margin)
-	const isActive = (selectedValue) && (selectedValue !== 0)
+	const gridGap = 8
 
+	const isActive = (selectedValue) && (selectedValue !== 0)
 
 	const cellPositions = []
 
@@ -75,7 +236,9 @@ export default function Sudoku() {
 			col={col}
 			innerWidth={innerWidth}
 			innerHeight={innerHeight}
-			gridGap={10}
+			gridGap={gridGap}
+			focusedCell={focusedCell}
+			setFocusedCell={setFocusedCell}
 			/>
 	))
 	
@@ -84,7 +247,7 @@ export default function Sudoku() {
 		cells.map((_, i) => ({
 			opacity: toggle ? 1 : 0,
 			transform: toggle ? 'scale(1)' : 'scale(0)',
-			delay: i * 5
+			delay: i * 4,
 		}))
 	)
 
@@ -101,15 +264,20 @@ export default function Sudoku() {
 		</animated.g>
 	))
 
+	// const animatedStyle = useSpring({
+	// 	transform: (gameComplete) ? 'scale(0.5) rotate(360deg)' : 'scale(1) rotate(0deg)',
+	// 	immediate: true
+	// })
+
     return (
 		<svg className={`sudoku_svg ${isActive ? 'active' : ''}`}
 			viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
 
 			<g transform={`translate(${margin}, ${margin})`}>
-
 				<SudokuFgBars
 					innerWidth={innerWidth}
 					innerHeight={innerHeight}
+					margin={margin}
 					/>
 
 				{animatedCells}

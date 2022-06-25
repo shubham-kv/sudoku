@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import {deepCopy, genEmptySudokuMatrix} from 'utils'
 
 import {genSudokuMatrix} from 'sudokuHelpers'
+import {deepCopy, genEmptySudokuMatrix} from 'myUtils'
 
 
 const useSudokuMatrix = () => {
@@ -10,7 +10,8 @@ const useSudokuMatrix = () => {
 
 	useEffect(() => {
 		const loadMatrix = async () => {
-			const matrix = await genSudokuMatrix(1)
+			const emptyCellCount = 40
+			const matrix = await genSudokuMatrix(emptyCellCount)
 			setInputMatrix(deepCopy(matrix))
 			setWorkingMatrix(deepCopy(matrix))
 		}
@@ -21,18 +22,14 @@ const useSudokuMatrix = () => {
 }
 
 export const SudokuContext = createContext({
-	selectedValue:		undefined,
-	setSelectedValue:	null,
-	inputMatrix:		null,
-	workingMatrix:		null,
-	setWorkingMatrix:	null
+	selectedValue: undefined
 })
 
 export const SudokuContextProvider = ({children}) => {
 	const [selectedValue, setSelectedValue] = useState(null)
 	const {inputMatrix, setInputMatrix, workingMatrix, setWorkingMatrix} = useSudokuMatrix()
 
-	// true when the sudoku filled correctly aka game won
+	// true when the game is won
 	const [gameComplete, setGameComplete] = useState(false)
 
 	const value = {

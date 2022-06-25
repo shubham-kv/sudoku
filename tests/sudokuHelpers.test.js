@@ -1,5 +1,8 @@
 const {
-	getEmptyCell, isValidCellValue, randomlyFillSquares, solveMatrix, randomlyRemoveCells, genSudokuMatrix, validateSudokuMatrix
+	getEmptyCell,
+	isValidCellValue, randomlyFillSquares,
+	solveMatrix, randomlyRemoveCells,
+	genSudokuMatrix, validateSudokuMatrix
 } = require('../src/sudokuHelpers')
 
 const {range} = require('lodash')

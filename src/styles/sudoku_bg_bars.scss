@@ -3,6 +3,7 @@
 .sudoku_bg_bar {
 	position: fixed;
 	z-index: -100;
+	transition: all 0.2s ease;
 
 	div {
 		display: inline-block;
@@ -29,19 +30,19 @@
 		}
 
 		&:nth-child(1) {
-			left: calc(100% / 3 + 4px);
+			left: calc(100% / 3);
 		}
 
 		&:nth-child(2) {
-			left: calc(2 * 100% / 3 - 4px);
+			left: calc(2 * 100% / 3);
 		}
 
 		&:nth-child(3) {
-			top: calc(33% + 0.25rem + 4px);
+			top: calc(100% / 3);
 		}
 
 		&:nth-child(4) {
-			top: calc(65% + 0.25rem - 4px);
+			top: calc(2 * 100% / 3);
 		}
 	}
 

@@ -3,25 +3,27 @@ import {useSpring, animated} from '@react-spring/web'
 
 import {useSudokuContext} from 'contexts/SudokuContext'
 import {isValidCellValue} from 'sudokuHelpers'
-import {deepCopy} from 'utils'
+import {deepCopy} from 'myUtils'
 
 
 export default function SudokuCell(props) {
 	const {
 		row, col,
-		innerWidth, innerHeight, gridGap
+		innerWidth, innerHeight, gridGap,
+		focusedCell, setFocusedCell
 	} = props
 
 	const sudokuContextValue = useSudokuContext()
 	const {
 		selectedValue, setSelectedValue,
 		inputMatrix, workingMatrix, setWorkingMatrix,
+		gameComplete
 	} = sudokuContextValue
 
 
 	const handleCellClick = useCallback(
 		(row, col) => {
-			// if selected value is not null and not 0
+			// if selected value is not null or 0
 			if(selectedValue || selectedValue === 0) {
 
 				// if clicked on a modifiable cell
@@ -33,6 +35,7 @@ export default function SudokuCell(props) {
 						: selectedValue
 
 					setWorkingMatrix(newMatrix)
+					setFocusedCell(null)
 				}
 				else {
 					// select the value of the clicked cell
@@ -45,7 +48,11 @@ export default function SudokuCell(props) {
 			}
 
 		},
-		[ inputMatrix, workingMatrix, setWorkingMatrix, selectedValue, setSelectedValue ]
+		[
+			selectedValue, setSelectedValue,
+			inputMatrix, workingMatrix, setWorkingMatrix,
+			setFocusedCell
+		]
 	)
 
 	const inputMatrixVal = inputMatrix[row][col]
@@ -56,7 +63,7 @@ export default function SudokuCell(props) {
 		cellClassArr.push('unmodifiable')
 	}
 	else {
-		if(!isValidCellValue(workingMatrix, {row, col}, value)) {
+		if((value !== 0) && !isValidCellValue(workingMatrix, {row, col}, value)) {
 			cellClassArr.push('incorrect')
 		}
 	}
@@ -65,14 +72,17 @@ export default function SudokuCell(props) {
 		cellClassArr.push('highlighted')
 	}
 
-	const sudokuCellClassName = cellClassArr.join(' ')
+	const cellClassName = cellClassArr.join(' ')
 
-	const cellOuterWidth = (innerWidth - 2 * gridGap) / 9
-	const cellOuterHeight = (innerHeight - 2 * gridGap) / 9
+
+	// Grid gap is the gap between the grids and also
+	// is the gap between the peripheral cells and the container's edge
+	const cellOuterWidth = (innerWidth - 3 * gridGap) / 9
+	const cellOuterHeight = (innerHeight - 3 * gridGap) / 9
 	const circleMargin = 2
 	const radius = cellOuterWidth / 2 - circleMargin
-	const translateX = col * cellOuterWidth + (parseInt(col / 3) * gridGap)
-	const translateY = row * cellOuterHeight + (parseInt(row / 3) * gridGap)
+	const translateX = col * cellOuterWidth + (parseInt(col / 3) * gridGap + gridGap/2)
+	const translateY = row * cellOuterHeight + (parseInt(row / 3) * gridGap + gridGap/2)
 
 
 	const animatedStyle = useSpring({
@@ -83,8 +93,24 @@ export default function SudokuCell(props) {
 	})
 
 	return (
-		<g className={sudokuCellClassName}
+		<g className={cellClassName}
 			transform={`translate(${translateX}, ${translateY})`}>
+
+			{
+				(focusedCell && ((row === focusedCell.row) && (col === focusedCell.col)))
+				? (
+					<rect
+						width={cellOuterWidth}
+						height={cellOuterHeight}
+						fill={cellClassArr.includes('incorrect') ? 'red' : 'white'}
+						fillOpacity={0.1}
+						rx={cellOuterWidth/4}
+						stroke={cellClassArr.includes('incorrect') ? 'red' : 'white'}
+						strokeOpacity={0.2}
+						/>
+				)
+				: null
+			}
 
 			<animated.g
 				style={{
@@ -92,16 +118,11 @@ export default function SudokuCell(props) {
 					transformBox: 'fill-box',
 					...animatedStyle
 				}}>
-				{
-					// ((inputMatrix[row][col] !== 0) || cellClassArr.includes('highlighted'))
-					// ? (
-						<circle 
-							cx={cellOuterWidth/2}
-							cy={cellOuterHeight/2}
-							r={radius} />
-					// )
-					// : null
-				}
+
+				<circle 
+					cx={cellOuterWidth/2}
+					cy={cellOuterHeight/2}
+					r={radius} />
 				
 				{
 					(value)
@@ -114,11 +135,17 @@ export default function SudokuCell(props) {
 				}
 			</animated.g>
 
-			<rect
-				fill='transparent'
-				width={cellOuterWidth} height={cellOuterHeight}
-				onClick={() => handleCellClick(row, col)}
-				/>
+			{
+				(!gameComplete)
+				? (
+					<rect
+						fill='transparent'
+						width={cellOuterWidth} height={cellOuterHeight}
+						onClick={() => handleCellClick(row, col)}
+						/>
+				)
+				: null
+			}
 		</g>
 	)
 }

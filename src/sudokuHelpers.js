@@ -1,9 +1,9 @@
 import _, {random, range, shuffle} from 'lodash'
-import {genEmptySudokuMatrix} from './utils'
+import {genEmptySudokuMatrix} from './myUtils'
 
 // Returns the first empty cell (or null otherwise) in the sudoku matrix
 // as an object with 'row' and 'col' keys.
-export const getEmptyCell = (matrix) => {
+export const getFirstEmptyCell = (matrix) => {
 	for(let i = 0; i < 9; i++) {
 		for(let j = 0; j < 9; j++) {
 			if(matrix[i][j] === 0) {
@@ -12,6 +12,19 @@ export const getEmptyCell = (matrix) => {
 		}
 	}
 	return null
+}
+
+export const getAllEmptyCells = (matrix) => {
+	const emptyCells = []
+
+	for(let i = 0; i < 9; i++) {
+		for(let j = 0; j < 9; j++) {
+			if(matrix[i][j] === 0) {
+				emptyCells.push({row: i, col: j})
+			}
+		}
+	}
+	return emptyCells
 }
 
 // Checks whether it is correct to put the value in the given cell
@@ -92,7 +105,7 @@ export const solveMatrix = (matrix) => {
 	const newMatrix = JSON.parse(JSON.stringify(matrix))
 
 	const solver = () => {
-		const cell = getEmptyCell(newMatrix)
+		const cell = getFirstEmptyCell(newMatrix)
 
 		if(cell === null) {
 			return true;

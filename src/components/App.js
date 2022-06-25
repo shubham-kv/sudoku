@@ -1,10 +1,15 @@
 import React, {useEffect, useState} from 'react'
+import {useSpring, animated} from '@react-spring/web'
 
 import SudokuBgBars from 'components/SudokuBgBars'
 import Sudoku from 'components/Sudoku'
 import Input from 'components/Input'
 
+import {useSudokuContext} from 'contexts/SudokuContext'
+
+
 export default function App() {
+	const {gameComplete} = useSudokuContext()
 	const [isWideScreen, setIsWideScreen] = useState(null)
 
 	useEffect(() => {
@@ -19,16 +24,26 @@ export default function App() {
 		}
 	}, [])
 
+	const animatedStyles = useSpring({
+		opacity: (gameComplete) ? 0 : 1,
+		transform: (gameComplete) ? 'scale(0)' : 'scale(1)'
+	})
+
 	return (
 		<div className='app'>
 			<main>
 				{
-					(isWideScreen)
+					isWideScreen
 					? <SudokuBgBars />
 					: null
 				}
+
 				<Sudoku />
-				<Input />
+
+				<animated.div
+					style={animatedStyles}>
+					<Input />
+				</animated.div>
 			</main>
 		</div>
 	)
