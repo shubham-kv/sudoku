@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {useSpring, animated} from '@react-spring/web'
+import {Globals, useSpring, animated} from '@react-spring/web'
 
 import SudokuBgBars from 'components/SudokuBgBars'
 import Sudoku from 'components/Sudoku'
@@ -19,10 +19,14 @@ export default function App() {
 		resizeListener()
 		window.addEventListener('resize', resizeListener)
 
-		return () => {
-			window.removeEventListener('resize', resizeListener)
-		}
-	}, [])
+		return () => window.removeEventListener('resize', resizeListener)
+	})
+
+	useEffect(() => {
+		Globals.assign({
+			skipAnimation: !isWideScreen
+		})
+	}, [isWideScreen])
 
 	const animatedStyles = useSpring({
 		opacity: (gameComplete) ? 0 : 1,

@@ -14,12 +14,17 @@ main {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
 
-	width: 85%;
+	width: 92%;
 	max-width: 600px;
 	min-height: 100vh;
 	margin: auto;
+
+	@media screen and (min-width: $min_large_device_width) {
+		& {
+			width: 85%;
+		}
+	}
 }
 
 .number_input {

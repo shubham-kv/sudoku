@@ -9,7 +9,6 @@ export default function Input() {
 	const sudokuContextValue = useSudokuContext()
 	const {
 		selectedValue, setSelectedValue,
-		workingMatrix
 	} = sudokuContextValue
 
 
@@ -21,12 +20,6 @@ export default function Input() {
 			activeEl && activeEl.focus()
 		}
 	}, [selectedValue])
-
-
-	useEffect(() => {
-		
-
-	}, [workingMatrix])
 
 
 	const handleClick = useCallback((e, number) => {
