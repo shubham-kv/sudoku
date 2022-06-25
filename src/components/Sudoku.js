@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import {useSprings, animated, useSpring} from '@react-spring/web'
+import {useSprings, animated} from '@react-spring/web'
 import {range} from 'lodash'
 
 import SudokuFgBars from 'components/SudokuFgBars'
