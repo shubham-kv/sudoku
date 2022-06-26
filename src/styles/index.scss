@@ -15,26 +15,20 @@ main {
 	flex-direction: column;
 	align-items: center;
 
-	width: 92%;
+	width: 90%;
 	max-width: 600px;
 	min-height: 100vh;
 	margin: auto;
-
-	@media screen and (min-width: $min_large_device_width) {
-		& {
-			width: 85%;
-		}
-	}
 }
 
-.number_input {
+.number_board {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	flex-wrap: wrap;
 }
 
-.input_cell {
+.input_btn {
 	flex-basis: 20%;
 	max-width: 3.5rem;
 	height: 3.5rem;
@@ -44,15 +38,13 @@ main {
 	user-select: none;
 	background: none;
 
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	color: $foreground_nom;
 	border-radius: 50%;
 	border: 2px solid rgba(white, 0.12);
 
-	@media screen and (min-width: $min_large_device_width) {
-		& {
-			transition: all 0.2s ease;
-		}
+	&.all_filled {
+		color: $primary_color;
 	}
 
 	&:hover {
@@ -72,5 +64,11 @@ main {
 		border-color: $primary_color;
 		background-color: $primary_color;
 		box-shadow: 0 0 30px 5px rgba($primary_color, 0.6);
+	}
+}
+
+@media screen and (min-width: $min_large_device_width) {
+	.input_btn {
+		transition: all 0.2s ease;
 	}
 }

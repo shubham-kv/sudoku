@@ -228,7 +228,6 @@ export const validateSudokuMatrix = (matrix) => {
 
 			const rowStart = squareRowIndex * 3
 			const rowEnd = squareRowIndex * 3 + 3
-
 			const colStart = squareColIndex * 3
 			const colEnd = squareColIndex * 3 + 3
 

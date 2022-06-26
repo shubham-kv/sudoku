@@ -2,8 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 import {range} from 'lodash'
 
-import SudokuFgBars from 'components/SudokuFgBars'
-import SudokuCell from 'components/SudokuCell'
+import SudokuSquare from 'components/SudokuSquare'
 import {useSudokuContext} from 'contexts/SudokuContext'
 
 import {getAllEmptyCells, getFirstEmptyCell, validateSudokuMatrix} from 'sudokuHelpers'
@@ -28,7 +27,6 @@ export default function Sudoku() {
 	useEffect(() => {
 		setToggle(true)
 		setEmptyCells(getAllEmptyCells(inputMatrix))
-
 		// create a timer
 	}, [inputMatrix])
 
@@ -53,7 +51,6 @@ export default function Sudoku() {
 		}
 
 	}, [selectedValue, setSelectedValue, workingMatrix, setWorkingMatrix, focusedCell])
-
 
 
 	const keydownListener = useCallback((e) => {
@@ -97,6 +94,7 @@ export default function Sudoku() {
 				}
 				break
 			}
+
 			case 'ArrowUp': {
 				if(focusedCell === null) {
 					// set focused cell to the last empty cell
@@ -131,6 +129,7 @@ export default function Sudoku() {
 
 				break
 			}
+
 			case 'ArrowDown': {
 				if(focusedCell === null) {
 					// set focused cell to the first empty cell
@@ -140,7 +139,7 @@ export default function Sudoku() {
 				}
 				else {
 					// set focused cell to the empty cell just below the focused cell
-					// or the first one
+					// or the first empty cell
 					const {row, col} = focusedCell
 					
 					// sort cells in asc order acc. to col
@@ -172,6 +171,7 @@ export default function Sudoku() {
 
 	}, [emptyCells, focusedCell, setFocusedCell])
 
+
 	useEffect(() => {
 		document.addEventListener('keydown', keydownListener)
 		document.addEventListener('keyup', keyupListener)
@@ -180,7 +180,6 @@ export default function Sudoku() {
 			document.removeEventListener('keyup', keyupListener)
 		}
 	}, [keydownListener, keyupListener])
-
 
 	useEffect(() => {
 		if(getFirstEmptyCell(workingMatrix) === null) {
@@ -211,77 +210,50 @@ export default function Sudoku() {
 		}
 	}, [gameComplete, setSelectedValue])
 
-
-	const svgWidth = 300
-    const svgHeight = 300
-	const margin = 4
-	const innerWidth = svgWidth - (2 * margin)
-	const innerHeight = svgHeight - (2 * margin)
-	const gridGap = 8
-
 	const isActive = (selectedValue) && (selectedValue !== 0)
-
 	const cellPositions = []
 
-	for(let i = 0; i < 9; i++) {
-		for(let j = 0; j < 9; j++) {
+	for(let i = 0; i < 3; i++) {
+		for(let j = 0; j < 3; j++) {
 			cellPositions.push([i, j])
 		}
 	}
 
-	const cells = cellPositions.map(([row, col]) => (
-		<SudokuCell
-			key={`sudoku_cell_${row}${col}`}
-			row={row}
-			col={col}
-			innerWidth={innerWidth}
-			innerHeight={innerHeight}
-			gridGap={gridGap}
+	const squares = cellPositions.map(([row, col]) => (
+		<SudokuSquare
+			key={`sudoku_square_${row}${col}`}
+			squareRow={row}
+			squareCol={col}
 			focusedCell={focusedCell}
 			setFocusedCell={setFocusedCell}
 			/>
 	))
-	
+
 	const springs = useSprings(
-		cells.length,
-		cells.map((_, i) => ({
-			opacity: toggle ? 1 : 0,
-			transform: toggle ? 'scale(1)' : 'scale(0)',
-			delay: i * 4,
+		squares.length,
+		squares.map((_, i) => ({
+			opacity: toggle ? '1' : '0',
+			delay: i * 50
 		}))
 	)
 
-	const animatedCells = springs.map((animatedStyle, i) => (
-		<animated.g
-			key={i}
-			style={{
-				transformOrigin: 'center',
-				// transformBox: 'fill-box',
-				...animatedStyle
-			}}
-			>
-			{cells[i]}
-		</animated.g>
+	const animatedSquares = springs.map((animatedStyle, i) => (
+		<animated.div key={i} style={animatedStyle}>
+			{squares[i]}
+		</animated.div>
 	))
 
-	// const animatedStyle = useSpring({
-	// 	transform: (gameComplete) ? 'scale(0.5) rotate(360deg)' : 'scale(1) rotate(0deg)',
-	// 	immediate: true
-	// })
+	return (
+		<div className='sudoku_wrapper'>
+			<div className={`bg_bar ${isActive ? 'active' : ''}`}></div>
+			<div className={`bg_bar ${isActive ? 'active' : ''}`}></div>
 
-    return (
-		<svg className={`sudoku_svg ${isActive ? 'active' : ''}`}
-			viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
+			<div className={`sudoku ${isActive ? 'active' : ''}`}>
+				{animatedSquares}
+			</div>
 
-			<g transform={`translate(${margin}, ${margin})`}>
-				<SudokuFgBars
-					innerWidth={innerWidth}
-					innerHeight={innerHeight}
-					margin={margin}
-					/>
-
-				{animatedCells}
-			</g>
-		</svg>
-    )
+			<div className='fg_bar'></div>
+			<div className='fg_bar'></div>
+		</div>
+	)
 }

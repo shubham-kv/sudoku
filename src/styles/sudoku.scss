@@ -1,75 +1,214 @@
 @import './variables.scss';
 
-.sudoku_svg {
+.sudoku_wrapper {
 	max-width: 500px;
 	margin: 3rem 0;
+	position: relative;
+}
 
-	border-radius: 1rem;
+.sudoku {
+	max-width: 500px;
+	padding: 0.75rem;
+
+	border-radius: 1.5rem;
 	border: 2px solid rgba(white, 0.025);
 	background-color: rgba(white, 0.025);
 	backdrop-filter: blur(28px);
+
+	display: grid;
+	grid-template-columns: auto auto auto;
+	gap: 0.8rem;
 	
+	@media only screen and (min-width: $min_large_device_width) {
+		gap: 1rem;
+	}
+
 	&.active {
 		border-color: rgba($primary_color, 0.1);
 		background-color: rgba($primary_color, 0.05);
-
 		box-shadow:
 			0 0 15px 5px rgba($primary_color, 0.05),
 			0 0 30px 10px rgba($primary_color, 0.05);
 	}
+}
 
-	@media screen and (min-width: $min_large_device_width) {
-		& {
-			transition: all 0.2s ease;
-		}
+.sudoku_square {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	gap: 0.25rem;
+
+	@media only screen and (min-width: $min_large_device_width) {
+		gap: 0.5rem;
 	}
 }
 
-.sudoku_cell_g {
-	@media screen and (min-width: $min_large_device_width) {
-		circle, text {
-			transition: all 0.4s ease;
-		}
+.sudoku_cell {
+	width:  1.5rem;
+	height: 1.5rem;
+	padding: 4px;
+	
+	display: grid;
+	place-content: center;
+	position: relative;
+
+	user-select: none;
+	border-radius: 50%;
+	font-size: 0.9rem;
+
+	@media only screen and (min-width: $min_large_device_width) {
+		width:  2rem;
+		height: 2rem;
+		font-size: 1.2rem;
 	}
 
-	circle {
-		fill: transparent;
+	@media only screen and (min-width: 520px) {
+		width:  2.5rem;
+		height: 2.5rem;
+		font-size: 1.2rem;
 	}
 
-	text {
-		user-select: none;
-		fill: $foreground_high;
-		font-size: 0.9rem;
-		text-anchor: middle;
-		dominant-baseline: central;
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) scale(1.05);
+		display: inline-block;
+		width: 100%;
+		height: 100%;
+		border-radius: 20%;
 	}
-
+	
 	&.unmodifiable {
-		circle {
-			fill: rgba(white, 0.1);
-			stroke: rgba(white, 0.1);
-			stroke-width: 0.5;
-		}
+		border: 1px solid rgba(white, 0.1);
+		background-color: rgba(white, 0.1);
+	}
+	
+	&.focused::before {
+		border: 1px solid rgba(white, 0.1);
+		background-color: rgba(white, 0.06);
 	}
 
 	&.highlighted {
-		circle {
-			fill: rgba($primary_color, 1);
-		}
-		text {
-			fill: $on_primary;
-		}
+		color: $on_primary;
+		background-color: rgba($primary_color, 1);
+	}
+
+	&.highlighted.focused::before {
+		border: 1px solid rgba($primary_color, 0.5);
+		background-color: rgba($primary_color, 0.2);
 	}
 
 	&.incorrect {
-		text {
-			fill: $error_color;
-		}
+		color: $error_color;
+	}
+
+	&.incorrect.focused::before {
+		border: 1px solid rgba($error_color, 0.2);
+		background-color: rgba($error_color, 0.1);
 	}
 
 	&.highlighted.incorrect {
-		circle {
-			fill: rgba($error_color, 0.2);
-		}
+		background-color: rgba($error_color, 0.2);
+	}
+}
+
+.bg_bar {
+	width: 100%;
+	height: calc(100% / 3);
+	z-index: -100;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+
+	&::before, &::after {
+		content: '';
+		display: inline-block;
+		width: calc(100% + 3rem);
+		height: 1px;
+
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+
+		background-color: white;
+		box-shadow:
+			0 0 5px 1px white,
+			0 0 30px 5px rgba(white, 0.2),
+			0 0 30px 5px rgba(white, 0.4);
+	}
+
+	&.active::before, &.active::after {
+		box-shadow:
+			0 0 5px 1px rgba(white, 0.5),
+			0 0 30px 5px rgba($primary_color, 0.2),
+			0 0 30px 5px rgba($primary_color, 0.4),
+			0 0 60px 5px rgba($primary_color, 1);
+	}
+
+	&::before {
+		top: 0;
+	}
+
+	&::after {
+		bottom: 0;
+	}
+	
+	&:nth-child(1) {
+		transform: translate(-50%, -50%);
+	}
+
+	&:nth-child(2) {
+		transform: translate(-50%, -50%) rotate(90deg);
+	}
+
+	@media only screen and (max-width: $min_large_device_width) {
+		display: none;
+	}
+}
+
+.fg_bar {
+	width: 100%;
+	height: calc(100% / 3);
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	pointer-events: none;
+	
+	&:nth-child(4) {
+		transform: translate(-50%, -50%);
+	}
+
+	&:nth-child(5) {
+		transform: translate(-50%, -50%) rotate(90deg);
+	}
+	
+	&::before, &::after {
+		content: '';
+		display: inline-block;
+		width: 100%;
+		height: 1px;
+
+		position: absolute;
+		background-color: rgba(white, 0.1);
+	}
+
+	&::before {
+		top: 0;
+	}
+
+	&::after {
+		bottom: 0;
+	}
+}
+
+@media screen and (min-width: $min_large_device_width) {
+	.sudoku {
+		transition: all 0.2s ease;
+	}
+	.sudoku_cell {
+		transition: all 0.4s ease;
 	}
 }
