@@ -72,3 +72,10 @@ main {
 		transition: all 0.2s ease;
 	}
 }
+
+@media screen and (max-width: $min_large_device_width) {
+	* {
+		transition: none !important;
+		box-shadow: none !important;
+	}
+}
