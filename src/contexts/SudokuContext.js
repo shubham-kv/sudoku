@@ -41,7 +41,7 @@ export const SudokuContextProvider = ({children}) => {
 
 	useEffect(() => {
 		genNewMatrix()
-	}, [])
+	}, [genNewMatrix])
 
 	const value = {
 		elapsedTime, setElapsedTime,
