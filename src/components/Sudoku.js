@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState, forwardRef, useRef} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 import {range} from 'lodash'
 
@@ -11,11 +11,12 @@ import {deepCopy} from 'myUtils'
 import 'styles/sudoku.scss'
 
 
-export default function Sudoku() {
+const Sudoku = forwardRef((props, ref) => {
 	const [toggle, setToggle] = useState(false)
 
 	const sudokuContextValue = useSudokuContext()
     const {
+		elapsedTime, setElapsedTime,
 		selectedValue, setSelectedValue,
 		inputMatrix, workingMatrix, setWorkingMatrix,
 		gameComplete, setGameComplete
@@ -24,11 +25,33 @@ export default function Sudoku() {
 	const [focusedCell, setFocusedCell] = useState(null)
 	const [emptyCells, setEmptyCells] = useState([])
 
+
+	const timerId = useRef(0);
+
+	const startTimer = useCallback(() => {
+		const callback = () => {
+			setElapsedTime(elapsedTime + 1)
+		}
+		timerId.current = setTimeout(() => {
+			callback()
+		}, 1000)
+	}, [elapsedTime, setElapsedTime])
+
+	const stopTimer = useCallback(() => {
+		clearInterval(timerId.current)
+	}, [])
+
 	useEffect(() => {
 		setToggle(true)
 		setEmptyCells(getAllEmptyCells(inputMatrix))
-		// create a timer
-	}, [inputMatrix])
+		startTimer()
+	}, [inputMatrix, startTimer])
+
+	useEffect(() => {
+		if(gameComplete) {
+			stopTimer()
+		}
+	}, [gameComplete, stopTimer])
 
 
 	const keyupListener = useCallback((e) => {
@@ -191,26 +214,7 @@ export default function Sudoku() {
 		}
 	}, [workingMatrix, setGameComplete, setSelectedValue])
 
-	useEffect(() => {
-		if(gameComplete) {
-			(() => {
-				let intervalId, value = 1
-	
-				intervalId = setInterval(() => {
-					if(value < 10) {
-						setSelectedValue(value)
-						value++
-					}
-					else {
-						setSelectedValue(null)
-						clearInterval(intervalId)
-					}
-				}, 1000)
-			})()
-		}
-	}, [gameComplete, setSelectedValue])
-
-	const isActive = (selectedValue) && (selectedValue !== 0)
+	const isActive = ((selectedValue && (selectedValue !== 0)) || gameComplete)
 	const cellPositions = []
 
 	for(let i = 0; i < 3; i++) {
@@ -244,9 +248,9 @@ export default function Sudoku() {
 	))
 
 	return (
-		<div className='sudoku_wrapper'>
-			<div className={`bg_bar ${isActive ? 'active' : ''}`}></div>
-			<div className={`bg_bar ${isActive ? 'active' : ''}`}></div>
+		<animated.div ref={ref} style={props.containerStyle} className='sudoku_wrapper'>
+			<animated.div style={props.bgBarStyle} className={`bg_bar ${isActive ? 'active' : ''}`} />
+			<animated.div style={props.bgBarStyle} className={`bg_bar ${isActive ? 'active' : ''}`} />
 
 			<div className={`sudoku ${isActive ? 'active' : ''}`}>
 				{animatedSquares}
@@ -254,6 +258,8 @@ export default function Sudoku() {
 
 			<div className='fg_bar'></div>
 			<div className='fg_bar'></div>
-		</div>
+		</animated.div>
 	)
-}
+})
+
+export default Sudoku

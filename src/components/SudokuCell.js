@@ -74,6 +74,10 @@ export default function SudokuCell(props) {
 		cellClassArr.push('highlighted')
 	}
 
+	if(gameComplete) {
+		cellClassArr.push('game_complete')
+	}
+
 	const cellClassName = cellClassArr.join(' ')
 
 	return (

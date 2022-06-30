@@ -1,17 +1,17 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {useSprings, useTransition, animated} from '@react-spring/web'
+import React, {useCallback, useEffect, useState, forwardRef} from 'react'
+import {useSprings, animated} from '@react-spring/web'
 
 import {useSudokuContext} from 'contexts/SudokuContext'
+import 'styles/number_board.scss'
 
 
-export default function NumberBoard() {
+const NumberBoard = forwardRef((props, ref) => {
 	const [toggle, setToggle] = useState(false)
 
 	const sudokuContextValue = useSudokuContext()
 	const {
 		selectedValue, setSelectedValue,
-		workingMatrix,
-		gameComplete
+		workingMatrix
 	} = sudokuContextValue
 
 	useEffect(() => {
@@ -26,11 +26,6 @@ export default function NumberBoard() {
 			activeEl && activeEl.focus()
 		}
 	}, [selectedValue])
-
-
-	useEffect(() => {
-
-	}, [workingMatrix])
 
 
 	const handleClick = useCallback((e, number) => {
@@ -54,7 +49,7 @@ export default function NumberBoard() {
 				}
 			}
 		}
-
+		
 		return (9 - count)
 	}, [workingMatrix])
 
@@ -97,20 +92,11 @@ export default function NumberBoard() {
 		)
 	})
 
-	const transitions = useTransition(gameComplete, {
-		from: {opacity: 0},
-		enter: {opacity: 1},
-		leave: {opacity: 0}
-	})
-
 	return (
-		transitions((animatedStyles, gameComplete) =>
-			(!gameComplete) ? (
-				<animated.div style={animatedStyles} className='number_board'>
-					{animatedButtons}
-				</animated.div>
-			)
-			: null
-		)
+		<animated.div ref={ref} style={props.style} className='number_board'>
+			{animatedButtons}
+		</animated.div>
 	)
-}
+})
+
+export default NumberBoard

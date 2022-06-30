@@ -1,42 +1,55 @@
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {createContext, useCallback, useContext, useEffect, useState} from 'react'
 
 import {genSudokuMatrix} from 'sudokuHelpers'
 import {deepCopy, genEmptySudokuMatrix} from 'myUtils'
 
-
-const useSudokuMatrix = () => {
-	const [inputMatrix, setInputMatrix] = useState(genEmptySudokuMatrix())
-	const [workingMatrix, setWorkingMatrix] = useState(genEmptySudokuMatrix())
-
-	useEffect(() => {
-		const loadMatrix = async () => {
-			const emptyCellCount = 40
-			const matrix = await genSudokuMatrix(emptyCellCount)
-			setInputMatrix(deepCopy(matrix))
-			setWorkingMatrix(deepCopy(matrix))
-		}
-		loadMatrix()
-	}, [])
-
-	return {inputMatrix, setInputMatrix, workingMatrix, setWorkingMatrix}
-}
 
 export const SudokuContext = createContext({
 	selectedValue: undefined
 })
 
 export const SudokuContextProvider = ({children}) => {
-	const [selectedValue, setSelectedValue] = useState(null)
-	const {inputMatrix, setInputMatrix, workingMatrix, setWorkingMatrix} = useSudokuMatrix()
+	const [elapsedTime, setElapsedTime] = useState(0)
+	const [selectedValue, setSelectedValue]	= useState(null)
+	const [inputMatrix,	setInputMatrix]		= useState(genEmptySudokuMatrix())
+	const [workingMatrix, setWorkingMatrix]	= useState(genEmptySudokuMatrix())
+	const [gameComplete, setGameComplete]	= useState(false)
 
-	// true when the game is won
-	const [gameComplete, setGameComplete] = useState(false)
+	const genNewMatrix = useCallback(async () => {
+		const count = 45
+		const matrix = await genSudokuMatrix(count)
+		setInputMatrix(deepCopy(matrix))
+		setWorkingMatrix(deepCopy(matrix))
+
+	}, [setInputMatrix, setWorkingMatrix])
+
+
+	const resetState = useCallback(() => {
+		setElapsedTime(0)
+		setSelectedValue(null)
+		setInputMatrix(genEmptySudokuMatrix())
+		setWorkingMatrix(genEmptySudokuMatrix())
+		setGameComplete(false)
+
+	}, [setSelectedValue, setInputMatrix, setWorkingMatrix, setGameComplete])
+
+
+	const genNewGame = useCallback(() => {
+		resetState()
+		genNewMatrix()
+	}, [resetState, genNewMatrix])
+
+	useEffect(() => {
+		genNewMatrix()
+	}, [])
 
 	const value = {
+		elapsedTime, setElapsedTime,
 		selectedValue, setSelectedValue,
 		inputMatrix, setInputMatrix,
 		workingMatrix, setWorkingMatrix,
-		gameComplete, setGameComplete
+		gameComplete, setGameComplete,
+		genNewGame
 	}
 
 	return (
@@ -48,10 +61,12 @@ export const SudokuContextProvider = ({children}) => {
 
 export const useSudokuContext = () => {
 	const {
+		elapsedTime, setElapsedTime,
 		selectedValue, setSelectedValue,
 		inputMatrix, setInputMatrix,
 		workingMatrix, setWorkingMatrix,
-		gameComplete, setGameComplete
+		gameComplete, setGameComplete,
+		genNewGame
 	} = useContext(SudokuContext)
 
 	useEffect(() => {
@@ -61,9 +76,11 @@ export const useSudokuContext = () => {
 	});
 
 	return {
+		elapsedTime, setElapsedTime,
 		selectedValue, setSelectedValue,
 		inputMatrix, setInputMatrix,
 		workingMatrix, setWorkingMatrix,
-		gameComplete, setGameComplete
+		gameComplete, setGameComplete,
+		genNewGame
 	}
 }
