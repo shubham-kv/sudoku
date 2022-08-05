@@ -14,38 +14,38 @@ import 'styles/sudoku.scss'
 const Sudoku = forwardRef((props, ref) => {
 	const [toggle, setToggle] = useState(false)
 
-	const sudokuContextValue = useSudokuContext()
     const {
-		elapsedTime, setElapsedTime,
+		setElapsedTime,
 		selectedValue, setSelectedValue,
 		inputMatrix, workingMatrix, setWorkingMatrix,
 		gameComplete, setGameComplete
-	} = sudokuContextValue
+	} = useSudokuContext()
 
 	const [focusedCell, setFocusedCell] = useState(null)
 	const [emptyCells, setEmptyCells] = useState([])
-
-
 	const timerId = useRef(0);
 
 	const startTimer = useCallback(() => {
-		const callback = () => {
-			setElapsedTime(elapsedTime + 1)
-		}
-		timerId.current = setTimeout(() => {
-			callback()
+		clearInterval(timerId.current)
+
+		timerId.current = setInterval(() => {
+			setElapsedTime(prev => prev + 1)
 		}, 1000)
-	}, [elapsedTime, setElapsedTime])
+	
+	}, [setElapsedTime])
 
 	const stopTimer = useCallback(() => {
 		clearInterval(timerId.current)
 	}, [])
 
 	useEffect(() => {
+		startTimer()
+	}, [startTimer])
+
+	useEffect(() => {
 		setToggle(true)
 		setEmptyCells(getAllEmptyCells(inputMatrix))
-		startTimer()
-	}, [inputMatrix, startTimer])
+	}, [inputMatrix])
 
 	useEffect(() => {
 		if(gameComplete) {
@@ -61,10 +61,12 @@ const Sudoku = forwardRef((props, ref) => {
 			if(focusedCell !== null) {
 				const {row, col} = focusedCell
 				const newWorkingMatrix = deepCopy(workingMatrix)
+
 				newWorkingMatrix[row][col] =
 					(workingMatrix[row][col] === pressedNumber)
-					? 0
-					: pressedNumber
+						? 0
+						: pressedNumber
+	
 				setWorkingMatrix(newWorkingMatrix)
 				setSelectedValue(pressedNumber)
 			}
@@ -198,6 +200,7 @@ const Sudoku = forwardRef((props, ref) => {
 	useEffect(() => {
 		document.addEventListener('keydown', keydownListener)
 		document.addEventListener('keyup', keyupListener)
+
 		return () => {
 			document.removeEventListener('keydown', keydownListener)
 			document.removeEventListener('keyup', keyupListener)

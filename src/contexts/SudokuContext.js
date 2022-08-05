@@ -1,24 +1,30 @@
-import React, {createContext, useCallback, useContext, useEffect, useState} from 'react'
+import {
+	createContext,
+	useCallback, useContext,
+	useEffect, useState
+} from 'react'
 
 import {genSudokuMatrix} from 'sudokuHelpers'
 import {deepCopy, genEmptySudokuMatrix} from 'myUtils'
 
 
-export const SudokuContext = createContext({
-	selectedValue: undefined
-})
+const SudokuContext = createContext(null)
 
-export const SudokuContextProvider = ({children}) => {
+const SudokuContextProvider = ({children}) => {
 	const [elapsedTime, setElapsedTime] = useState(0)
+
 	const [selectedValue, setSelectedValue]	= useState(null)
 	const [inputMatrix,	setInputMatrix]		= useState(genEmptySudokuMatrix())
 	const [workingMatrix, setWorkingMatrix]	= useState(genEmptySudokuMatrix())
+
 	const [gameComplete, setGameComplete]	= useState(false)
+
 
 	const genNewMatrix = useCallback(async () => {
 		const count = 45
 		const matrix = await genSudokuMatrix(count)
-		setInputMatrix(deepCopy(matrix))
+
+		setInputMatrix(matrix)
 		setWorkingMatrix(deepCopy(matrix))
 
 	}, [setInputMatrix, setWorkingMatrix])
@@ -27,8 +33,10 @@ export const SudokuContextProvider = ({children}) => {
 	const resetState = useCallback(() => {
 		setElapsedTime(0)
 		setSelectedValue(null)
+
 		setInputMatrix(genEmptySudokuMatrix())
 		setWorkingMatrix(genEmptySudokuMatrix())
+
 		setGameComplete(false)
 
 	}, [setSelectedValue, setInputMatrix, setWorkingMatrix, setGameComplete])
@@ -43,7 +51,7 @@ export const SudokuContextProvider = ({children}) => {
 		genNewMatrix()
 	}, [genNewMatrix])
 
-	const value = {
+	const ctxValue = {
 		elapsedTime, setElapsedTime,
 		selectedValue, setSelectedValue,
 		inputMatrix, setInputMatrix,
@@ -53,34 +61,25 @@ export const SudokuContextProvider = ({children}) => {
 	}
 
 	return (
-		<SudokuContext.Provider value={value}>
+		<SudokuContext.Provider value={ctxValue}>
 			{children}
 		</SudokuContext.Provider>
 	)
 }
 
-export const useSudokuContext = () => {
-	const {
-		elapsedTime, setElapsedTime,
-		selectedValue, setSelectedValue,
-		inputMatrix, setInputMatrix,
-		workingMatrix, setWorkingMatrix,
-		gameComplete, setGameComplete,
-		genNewGame
-	} = useContext(SudokuContext)
+const useSudokuContext = () => {
+	const sudokuCtxValue = useContext(SudokuContext)
 
 	useEffect(() => {
-		if(selectedValue === undefined) {
+		if(sudokuCtxValue === null) {
 			throw new Error(`The Component using 'useSudokuContext' hook must be a descendant of 'SudokuContextProvider'.`)
 		}
-	});
+	}, [sudokuCtxValue])
 
-	return {
-		elapsedTime, setElapsedTime,
-		selectedValue, setSelectedValue,
-		inputMatrix, setInputMatrix,
-		workingMatrix, setWorkingMatrix,
-		gameComplete, setGameComplete,
-		genNewGame
-	}
+	return sudokuCtxValue
+}
+
+export {
+	SudokuContextProvider,
+	useSudokuContext
 }

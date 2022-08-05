@@ -1,4 +1,7 @@
-import React, {useCallback, useEffect, useState, forwardRef} from 'react'
+import {
+	useCallback, useEffect,
+	useState, forwardRef
+} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 
 import {useSudokuContext} from 'contexts/SudokuContext'
@@ -8,11 +11,10 @@ import 'styles/number_board.scss'
 const NumberBoard = forwardRef((props, ref) => {
 	const [toggle, setToggle] = useState(false)
 
-	const sudokuContextValue = useSudokuContext()
 	const {
 		selectedValue, setSelectedValue,
 		workingMatrix
-	} = sudokuContextValue
+	} = useSudokuContext()
 
 	useEffect(() => {
 		setToggle(true)
@@ -32,12 +34,10 @@ const NumberBoard = forwardRef((props, ref) => {
 		if(selectedValue === number) {
 			setSelectedValue(null)
 			e.target.blur()
-		}
-		else {
+		} else {
 			setSelectedValue(number)
 		}
 	}, [selectedValue, setSelectedValue])
-
 
 	const getCountOfNumber = useCallback((number) => {
 		let count = 0;
@@ -49,7 +49,7 @@ const NumberBoard = forwardRef((props, ref) => {
 				}
 			}
 		}
-		
+
 		return (9 - count)
 	}, [workingMatrix])
 
@@ -93,7 +93,9 @@ const NumberBoard = forwardRef((props, ref) => {
 	})
 
 	return (
-		<animated.div ref={ref} style={props.style} className='number_board'>
+		<animated.div ref={ref}
+			style={props.style}
+			className='number_board'>
 			{animatedButtons}
 		</animated.div>
 	)

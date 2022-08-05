@@ -1,4 +1,3 @@
-import React from 'react'
 import {animated, useChain, useSpring, useSpringRef, useTransition} from '@react-spring/web'
 
 import {useSudokuContext} from 'contexts/SudokuContext'
@@ -6,8 +5,8 @@ import {useSudokuContext} from 'contexts/SudokuContext'
 import Sudoku from 'components/Sudoku'
 import NumberBoard from 'components/NumberBoard'
 import WinGreet from 'components/WinGreet'
-import {formatTime} from 'myUtils'
 
+import {formatTime} from 'myUtils'
 
 
 export default function App() {
@@ -58,34 +57,30 @@ export default function App() {
 			<main>
 				{
 					(!gameComplete) && 
-						<div className='time'>
+						(<div className='time'>
 							{formatTime(elapsedTime)}
-						</div>
+						</div>)
 				}
 
-				{
-					sudokuTransition((animatedProps, item) => (
-						(!item)
-						? <AnimatedSudoku containerStyle={animatedProps} bgBarStyle={bgBarAnimatedProps}  />
+				{ sudokuTransition((animatedProps, item) => (
+					(!item)
+						? (<AnimatedSudoku
+								containerStyle={animatedProps}
+								bgBarStyle={bgBarAnimatedProps} />)
 						: null
-					))
-				}
+				)) }
 
-				{
-					numberBoardTransition((animatedProps, item) => (
-						(!item)
+				{ numberBoardTransition((animatedProps, item) => (
+					(!item)
 						? <AnimatedNumberBoard style={animatedProps} />
 						: null
-					))
-				}
+				)) }
 
-				{
-					winTransition((animatedProps, item) => (
-						(item)
+				{ winTransition((animatedProps, item) => (
+					(item)
 						? <AnimatedWinGreet style={animatedProps} />
 						: null
-					))
-				}
+				)) }
 			</main>
 		</div>
 	)

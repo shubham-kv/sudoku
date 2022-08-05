@@ -12,9 +12,7 @@ const WinGreet = forwardRef((props, ref) => {
 
 	return (
 		<animated.div ref={ref} style={props.style} className='win_greet'>
-			<h1>
-				You Won!
-			</h1>
+			<h1>You Won!</h1>
 			<p>
 				Elapsed time: {`'${formatTime(elapsedTime)}'`}.
 			</p>

@@ -9,6 +9,7 @@ export default function SudokuSquare(props) {
 		squareRow, squareCol,
 		focusedCell, setFocusedCell
 	} = props
+	
 	const [toggle, setToggle] = useState(false)
 
 	const rowStart = squareRow * 3
