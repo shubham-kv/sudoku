@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 
 import SudokuCell from 'components/SudokuCell'

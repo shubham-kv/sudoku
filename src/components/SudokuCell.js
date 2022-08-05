@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import {useCallback} from 'react'
 
 import {useSudokuContext} from 'contexts/SudokuContext'
 import {isValidCellValue} from 'sudokuHelpers'

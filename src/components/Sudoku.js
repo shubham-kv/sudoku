@@ -1,4 +1,8 @@
-import React, {useCallback, useEffect, useState, forwardRef, useRef} from 'react'
+import {
+	useCallback, useEffect,
+	useState, useRef, forwardRef
+} from 'react'
+
 import {useSprings, animated} from '@react-spring/web'
 import {range} from 'lodash'
 

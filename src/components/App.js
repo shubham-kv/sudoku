@@ -1,4 +1,7 @@
-import {animated, useChain, useSpring, useSpringRef, useTransition} from '@react-spring/web'
+import {
+	animated, useChain, useSpring,
+	useSpringRef, useTransition
+} from '@react-spring/web'
 
 import {useSudokuContext} from 'contexts/SudokuContext'
 
