@@ -1,15 +1,11 @@
 import {useEffect, useState} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 
-import SudokuCell from './SudokuCell'
+import {SudokuCell} from './SudokuCell'
 
+export function SudokuSquare(props) {
+	const {squareRow, squareCol, focusedCell, setFocusedCell} = props
 
-export default function SudokuSquare(props) {
-	const {
-		squareRow, squareCol,
-		focusedCell, setFocusedCell
-	} = props
-	
 	const [toggle, setToggle] = useState(false)
 
 	const rowStart = squareRow * 3
@@ -23,8 +19,8 @@ export default function SudokuSquare(props) {
 
 	const cellPositions = []
 
-	for(let i = rowStart; i < rowEnd; i++) {
-		for(let j = colStart; j < colEnd; j++) {
+	for (let i = rowStart; i < rowEnd; i++) {
+		for (let j = colStart; j < colEnd; j++) {
 			cellPositions.push([i, j])
 		}
 	}
@@ -36,7 +32,7 @@ export default function SudokuSquare(props) {
 			col={col}
 			focusedCell={focusedCell}
 			setFocusedCell={setFocusedCell}
-			/>
+		/>
 	))
 
 	const springs = useSprings(
@@ -49,14 +45,13 @@ export default function SudokuSquare(props) {
 	)
 
 	const animatedCells = springs.map((animatedStyle, i) => (
-		<animated.div key={i} style={animatedStyle}>
+		<animated.div
+			key={i}
+			style={animatedStyle}
+		>
 			{cells[i]}
 		</animated.div>
 	))
 
-	return (
-		<div className='sudoku_square'>
-			{animatedCells}
-		</div>
-	)
+	return <div className='sudoku_square'>{animatedCells}</div>
 }

@@ -1,23 +1,22 @@
-
-$neon_purple:	#C724B1;
-$neon_yellow:	#c7cc36;
-$neon_orange:	#b88a29;
-$neon_green:	#64af59;
-$neon_blue:		#8989ff;
-$neon_cyan:		#27c3c3;
+$neon_purple: #c724b1;
+$neon_yellow: #c7cc36;
+$neon_orange: #b88a29;
+$neon_green: #64af59;
+$neon_blue: #8989ff;
+$neon_cyan: #27c3c3;
 
 $primary_color: $neon_purple;
-$error_color: 		#f60e0e;
-$background_color:	#121212;
-$surface_color:		#242424;
+$error_color: #f60e0e;
+$background_color: #121212;
+$surface_color: #242424;
 
-$on_primary:	#121212;
-$on_surface:	#F0F0F0;
-$on_background:	#F0F0F0;
-$on_error:		#F0F0F0;
+$on_primary: #121212;
+$on_surface: #f0f0f0;
+$on_background: #f0f0f0;
+$on_error: #f0f0f0;
 
-$foreground_low: rgba($on_background, 0.40);
-$foreground_nom: rgba($on_background, 0.60);
-$foreground_high: rgba($on_background, 0.80);
+$foreground_low: rgba($on_background, 0.4);
+$foreground_nom: rgba($on_background, 0.6);
+$foreground_high: rgba($on_background, 0.8);
 
 $min_large_device_width: 480px;

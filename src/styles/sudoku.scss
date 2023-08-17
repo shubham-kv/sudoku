@@ -18,7 +18,7 @@
 	display: grid;
 	grid-template-columns: auto auto auto;
 	gap: 0.8rem;
-	
+
 	@media only screen and (min-width: $min_large_device_width) {
 		gap: 1rem;
 	}
@@ -43,10 +43,10 @@
 }
 
 .sudoku_cell {
-	width:  1.5rem;
+	width: 1.5rem;
 	height: 1.5rem;
 	padding: 4px;
-	
+
 	display: grid;
 	place-content: center;
 	position: relative;
@@ -56,14 +56,14 @@
 	font-size: 0.9rem;
 
 	@media only screen and (min-width: $min_large_device_width) {
-		width:  2rem;
+		width: 2rem;
 		height: 2rem;
 		font-size: 1.2rem;
 		transition: all 0.2s ease;
 	}
 
 	@media only screen and (min-width: 520px) {
-		width:  2.5rem;
+		width: 2.5rem;
 		height: 2.5rem;
 		font-size: 1.2rem;
 	}
@@ -79,12 +79,12 @@
 		height: 100%;
 		border-radius: 20%;
 	}
-	
+
 	&.unmodifiable {
 		border: 1px solid rgba(white, 0.1);
 		background-color: rgba(white, 0.1);
 	}
-	
+
 	&.focused::before {
 		border: 1px solid rgba(white, 0.1);
 		background-color: rgba(white, 0.06);
@@ -122,7 +122,8 @@
 .bg_bar {
 	position: absolute;
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		display: inline-block;
 		position: absolute;
@@ -139,7 +140,8 @@
 		top: calc(100% / 3);
 		left: 0;
 
-		&::before, &::after {
+		&::before,
+		&::after {
 			width: calc(100% + 3rem);
 			height: 1px;
 			left: 50%;
@@ -149,7 +151,7 @@
 		&::before {
 			top: 0;
 		}
-	
+
 		&::after {
 			bottom: 0;
 		}
@@ -161,7 +163,8 @@
 		top: 0;
 		left: calc(100% / 3);
 
-		&::before, &::after {
+		&::before,
+		&::after {
 			width: 1px;
 			height: calc(100% + 3rem);
 			top: 50%;
@@ -177,14 +180,15 @@
 		}
 	}
 
-	&.active::before, &.active::after {
+	&.active::before,
+	&.active::after {
 		box-shadow:
 			0 0 5px 1px rgba(white, 0.5),
 			0 0 30px 5px rgba($primary_color, 0.2),
 			0 0 30px 5px rgba($primary_color, 0.4),
 			0 0 60px 5px rgba($primary_color, 1);
 	}
-	
+
 	@media only screen and (max-width: $min_large_device_width) {
 		display: none;
 	}
@@ -198,7 +202,7 @@
 	top: 50%;
 	left: 50%;
 	pointer-events: none;
-	
+
 	&:nth-child(4) {
 		transform: translate(-50%, -50%);
 	}
@@ -206,8 +210,9 @@
 	&:nth-child(5) {
 		transform: translate(-50%, -50%) rotate(90deg);
 	}
-	
-	&::before, &::after {
+
+	&::before,
+	&::after {
 		content: '';
 		display: inline-block;
 		width: 100%;
