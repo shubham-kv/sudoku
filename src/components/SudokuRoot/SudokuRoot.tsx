@@ -6,15 +6,14 @@ import {
 	useTransition
 } from '@react-spring/web'
 
-import {useSudokuContext} from '../hooks'
+import {NumberBoard} from '../NumberBoard'
+import {Sudoku} from '../Sudoku'
+import {WinGreet} from '../WinGreet'
 
-import {Sudoku} from './Sudoku'
-import {NumberBoard} from './NumberBoard'
-import {WinGreet} from './WinGreet'
+import {useSudokuContext} from '../../hooks'
+import {formatTime} from '../../utils'
 
-import {formatTime} from '../myUtils'
-
-export default function App() {
+export function SudokuRoot() {
 	const {elapsedTime, gameComplete} = useSudokuContext()
 
 	const AnimatedSudoku = animated(Sudoku)
@@ -76,27 +75,27 @@ export default function App() {
 	)
 
 	return (
-		<div className='app'>
-			<main>
-				{!gameComplete && <div className='time'>{formatTime(elapsedTime)}</div>}
+		<>
+			{!gameComplete ? (
+				<div className='time'>{formatTime(elapsedTime)}</div>
+			) : null}
 
-				{sudokuTransition((animatedProps, item) =>
-					!item ? (
-						<AnimatedSudoku
-							containerStyle={animatedProps}
-							bgBarStyle={bgBarAnimatedProps}
-						/>
-					) : null
-				)}
+			{sudokuTransition((animatedProps, item) =>
+				!item ? (
+					<AnimatedSudoku
+						wrapperStyles={animatedProps}
+						backgroundBarStyles={bgBarAnimatedProps}
+					/>
+				) : null
+			)}
 
-				{numberBoardTransition((animatedProps, item) =>
-					!item ? <AnimatedNumberBoard style={animatedProps} /> : null
-				)}
+			{numberBoardTransition((animatedProps, item) =>
+				!item ? <AnimatedNumberBoard styles={animatedProps} /> : null
+			)}
 
-				{winTransition((animatedProps, item) =>
-					item ? <AnimatedWinGreet style={animatedProps} /> : null
-				)}
-			</main>
-		</div>
+			{winTransition((animatedProps, item) =>
+				item ? <AnimatedWinGreet styles={animatedProps} /> : null
+			)}
+		</>
 	)
 }

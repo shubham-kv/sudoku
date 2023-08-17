@@ -1,13 +1,13 @@
-@import './variables.scss';
+@import '../../styles/variables.scss';
 
-.number_board {
+.numberBoardRoot {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	flex-wrap: wrap;
 }
 
-.input_btn {
+.numberInput {
 	flex-basis: 20%;
 	max-width: 3rem;
 	height: 3rem;
@@ -22,7 +22,7 @@
 	border-radius: 50%;
 	border: 2px solid rgba(white, 0.12);
 
-	&.all_filled {
+	&.numberInputFilled {
 		color: $primary_color;
 	}
 
@@ -38,7 +38,7 @@
 		background-color: rgba($primary_color, 0.4);
 	}
 
-	&.active {
+	&.numberInputActive {
 		color: $on_primary;
 		border-color: $primary_color;
 		background-color: $primary_color;

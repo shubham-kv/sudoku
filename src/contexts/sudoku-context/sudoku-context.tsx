@@ -6,9 +6,7 @@ import {
 	useState
 } from 'react'
 
-import {genSudokuMatrix} from '../../sudokuHelpers'
-import {deepCopy, genEmptySudokuMatrix} from '../../myUtils'
-
+import {genEmptySudokuMatrix, genSudokuMatrix, deepCopy} from '../../utils'
 import {SudokuContextValue} from './types'
 
 const initialValue: SudokuContextValue = {

@@ -1,6 +1,6 @@
-@import './variables.scss';
+@import '../../styles/variables.scss';
 
-.sudoku_wrapper {
+.sudokuWrapper {
 	max-width: 500px;
 	margin: 3rem 0;
 	position: relative;
@@ -21,9 +21,10 @@
 
 	@media only screen and (min-width: $min_large_device_width) {
 		gap: 1rem;
+		transition: all 0.2s ease;
 	}
 
-	&.active {
+	&.sudokuActive {
 		border-color: rgba($primary_color, 0.1);
 		background-color: rgba($primary_color, 0.05);
 		box-shadow:
@@ -32,94 +33,7 @@
 	}
 }
 
-.sudoku_square {
-	display: grid;
-	grid-template-columns: auto auto auto;
-	gap: 0.25rem;
-
-	@media only screen and (min-width: $min_large_device_width) {
-		gap: 0.5rem;
-	}
-}
-
-.sudoku_cell {
-	width: 1.5rem;
-	height: 1.5rem;
-	padding: 4px;
-
-	display: grid;
-	place-content: center;
-	position: relative;
-
-	user-select: none;
-	border-radius: 50%;
-	font-size: 0.9rem;
-
-	@media only screen and (min-width: $min_large_device_width) {
-		width: 2rem;
-		height: 2rem;
-		font-size: 1.2rem;
-		transition: all 0.2s ease;
-	}
-
-	@media only screen and (min-width: 520px) {
-		width: 2.5rem;
-		height: 2.5rem;
-		font-size: 1.2rem;
-	}
-
-	&::before {
-		content: '';
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%) scale(1.05);
-		display: inline-block;
-		width: 100%;
-		height: 100%;
-		border-radius: 20%;
-	}
-
-	&.unmodifiable {
-		border: 1px solid rgba(white, 0.1);
-		background-color: rgba(white, 0.1);
-	}
-
-	&.focused::before {
-		border: 1px solid rgba(white, 0.1);
-		background-color: rgba(white, 0.06);
-	}
-
-	&.highlighted {
-		color: $on_primary;
-		background-color: rgba($primary_color, 1);
-	}
-
-	&.highlighted.focused::before {
-		border: 1px solid rgba($primary_color, 0.5);
-		background-color: rgba($primary_color, 0.2);
-	}
-
-	&.incorrect {
-		color: $error_color;
-	}
-
-	&.incorrect.focused::before {
-		border: 1px solid rgba($error_color, 0.2);
-		background-color: rgba($error_color, 0.1);
-	}
-
-	&.highlighted.incorrect {
-		background-color: rgba($error_color, 0.2);
-	}
-
-	&.game_complete {
-		// color: $on_primary;
-		background-color: rgba(white, 0.1);
-	}
-}
-
-.bg_bar {
+.backgroundBar {
 	position: absolute;
 
 	&::before,
@@ -180,8 +94,8 @@
 		}
 	}
 
-	&.active::before,
-	&.active::after {
+	&.backgroundBarActive::before,
+	&.backgroundBarActive::after {
 		box-shadow:
 			0 0 5px 1px rgba(white, 0.5),
 			0 0 30px 5px rgba($primary_color, 0.2),
@@ -194,7 +108,7 @@
 	}
 }
 
-.fg_bar {
+.foregroundBar {
 	width: 100%;
 	height: calc(100% / 3);
 
@@ -228,14 +142,5 @@
 
 	&::after {
 		bottom: 0;
-	}
-}
-
-@media screen and (min-width: $min_large_device_width) {
-	.sudoku {
-		transition: all 0.2s ease;
-	}
-	.sudoku_cell {
-		transition: all 0.4s ease;
 	}
 }

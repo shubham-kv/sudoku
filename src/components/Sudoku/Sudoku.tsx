@@ -2,20 +2,22 @@ import {range} from 'lodash'
 import {useCallback, useEffect, useState, useRef, forwardRef} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 
-import {SudokuSquare} from './SudokuSquare'
-import {useSudokuContext} from '../hooks'
+import {SudokuSquare} from '../SudokuSquare'
+import {useSudokuContext} from '../../hooks'
+
+import {SudokuProps} from './types'
+import {Cell} from '../../types/sudoku'
 
 import {
+	deepCopy,
 	getAllEmptyCells,
 	getFirstEmptyCell,
 	validateSudokuMatrix
-} from '../sudokuHelpers'
+} from '../../utils'
 
-import {deepCopy} from '../myUtils'
+import styles from './sudoku.module.scss'
 
-import '../styles/sudoku.scss'
-
-export const Sudoku = forwardRef((props, ref) => {
+export const Sudoku = forwardRef<HTMLDivElement, SudokuProps>((props, ref) => {
 	const [toggle, setToggle] = useState(false)
 
 	const {
@@ -29,8 +31,8 @@ export const Sudoku = forwardRef((props, ref) => {
 		setGameComplete
 	} = useSudokuContext()
 
-	const [focusedCell, setFocusedCell] = useState(null)
-	const [emptyCells, setEmptyCells] = useState([])
+	const [focusedCell, setFocusedCell] = useState<Cell | null>(null)
+	const [emptyCells, setEmptyCells] = useState<Cell[]>([])
 
 	const timerId = useRef<NodeJS.Timeout>()
 
@@ -146,9 +148,10 @@ export const Sudoku = forwardRef((props, ref) => {
 						// set focused cell to the empty cell just above the focused cell
 						// or the last empty cell
 						const {row, col} = focusedCell
+						const emptyCellsCopy: Cell[] = deepCopy(emptyCells)
 
 						// sort cells in asc order acc. to col
-						const sortedEmptyCells = deepCopy(emptyCells).sort(
+						const sortedEmptyCells = emptyCellsCopy.sort(
 							(a, b) => a.col - b.col
 						)
 
@@ -183,9 +186,10 @@ export const Sudoku = forwardRef((props, ref) => {
 						// set focused cell to the empty cell just below the focused cell
 						// or the first empty cell
 						const {row, col} = focusedCell
+						const emptyCellsCopy: Cell[] = deepCopy(emptyCells)
 
 						// sort cells in asc order acc. to col
-						const sortedEmptyCells = deepCopy(emptyCells).sort(
+						const sortedEmptyCells = emptyCellsCopy.sort(
 							(a, b) => a.col - b.col
 						)
 
@@ -276,24 +280,31 @@ export const Sudoku = forwardRef((props, ref) => {
 	return (
 		<animated.div
 			ref={ref}
-			style={props.containerStyle}
-			className='sudoku_wrapper'
+			style={props.wrapperStyles}
+			className={styles.sudokuWrapper}
 		>
 			<animated.div
-				style={props.bgBarStyle}
-				className={`bg_bar ${isActive ? 'active' : ''}`}
-			/>
-			<animated.div
-				style={props.bgBarStyle}
-				className={`bg_bar ${isActive ? 'active' : ''}`}
+				style={props.backgroundBarStyles}
+				className={`${styles.backgroundBar} ${
+					isActive ? styles.backgroundBarActive : ''
+				}`}
 			/>
 
-			<div className={`sudoku ${isActive ? 'active' : ''}`}>
+			<animated.div
+				style={props.backgroundBarStyles}
+				className={`${styles.backgroundBar} ${
+					isActive ? styles.backgroundBarActive : ''
+				}`}
+			/>
+
+			<div
+				className={`${styles.sudoku} ${isActive ? styles.sudokuActive : ''}`}
+			>
 				{animatedSquares}
 			</div>
 
-			<div className='fg_bar'></div>
-			<div className='fg_bar'></div>
+			<div className={styles.foregroundBar} />
+			<div className={styles.foregroundBar} />
 		</animated.div>
 	)
 })
