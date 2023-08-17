@@ -5,8 +5,8 @@ import {
 
 import {useSprings, animated} from '@react-spring/web'
 
-import {useSudokuContext} from 'contexts/SudokuContext'
-import 'styles/number_board.scss'
+import {useSudokuContext} from '../contexts/SudokuContext'
+import '../styles/number_board.scss'
 
 
 const NumberBoard = forwardRef((props, ref) => {

@@ -4,8 +4,8 @@ import {
 	useEffect, useState
 } from 'react'
 
-import {genSudokuMatrix} from 'sudokuHelpers'
-import {deepCopy, genEmptySudokuMatrix} from 'myUtils'
+import {genSudokuMatrix} from '../sudokuHelpers'
+import {deepCopy, genEmptySudokuMatrix} from '../myUtils'
 
 
 const SudokuContext = createContext(null)

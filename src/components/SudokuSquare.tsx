@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 
-import SudokuCell from 'components/SudokuCell'
+import SudokuCell from './SudokuCell'
 
 
 export default function SudokuSquare(props) {

@@ -6,13 +6,13 @@ import {
 import {useSprings, animated} from '@react-spring/web'
 import {range} from 'lodash'
 
-import SudokuSquare from 'components/SudokuSquare'
-import {useSudokuContext} from 'contexts/SudokuContext'
+import SudokuSquare from './SudokuSquare'
+import {useSudokuContext} from '../contexts/SudokuContext'
 
-import {getAllEmptyCells, getFirstEmptyCell, validateSudokuMatrix} from 'sudokuHelpers'
-import {deepCopy} from 'myUtils'
+import {getAllEmptyCells, getFirstEmptyCell, validateSudokuMatrix} from '../sudokuHelpers'
+import {deepCopy} from '../myUtils'
 
-import 'styles/sudoku.scss'
+import '../styles/sudoku.scss'
 
 
 const Sudoku = forwardRef((props, ref) => {
@@ -270,3 +270,4 @@ const Sudoku = forwardRef((props, ref) => {
 })
 
 export default Sudoku
+

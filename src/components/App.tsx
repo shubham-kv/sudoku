@@ -3,13 +3,13 @@ import {
 	useSpringRef, useTransition
 } from '@react-spring/web'
 
-import {useSudokuContext} from 'contexts/SudokuContext'
+import {useSudokuContext} from '../contexts/SudokuContext'
 
-import Sudoku from 'components/Sudoku'
-import NumberBoard from 'components/NumberBoard'
-import WinGreet from 'components/WinGreet'
+import Sudoku from './Sudoku'
+import NumberBoard from './NumberBoard'
+import WinGreet from './WinGreet'
 
-import {formatTime} from 'myUtils'
+import {formatTime} from '../myUtils'
 
 
 export default function App() {
