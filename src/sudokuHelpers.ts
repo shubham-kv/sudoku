@@ -4,9 +4,9 @@ import {genEmptySudokuMatrix} from './myUtils'
 // Returns the first empty cell (or null otherwise) in the sudoku matrix
 // as an object with 'row' and 'col' keys.
 export const getFirstEmptyCell = (matrix) => {
-	for(let i = 0; i < 9; i++) {
-		for(let j = 0; j < 9; j++) {
-			if(matrix[i][j] === 0) {
+	for (let i = 0; i < 9; i++) {
+		for (let j = 0; j < 9; j++) {
+			if (matrix[i][j] === 0) {
 				return {row: i, col: j}
 			}
 		}
@@ -17,9 +17,9 @@ export const getFirstEmptyCell = (matrix) => {
 export const getAllEmptyCells = (matrix) => {
 	const emptyCells = []
 
-	for(let i = 0; i < 9; i++) {
-		for(let j = 0; j < 9; j++) {
-			if(matrix[i][j] === 0) {
+	for (let i = 0; i < 9; i++) {
+		for (let j = 0; j < 9; j++) {
+			if (matrix[i][j] === 0) {
 				emptyCells.push({row: i, col: j})
 			}
 		}
@@ -33,37 +33,37 @@ export const isValidCellValue = (matrix, cell, value) => {
 	const colIndex = cell.col
 
 	// check in row
-	for(let i = 0; i < 9; i++) {
-		if(i === colIndex) {
+	for (let i = 0; i < 9; i++) {
+		if (i === colIndex) {
 			// skip iteration for that cell
-			continue;
+			continue
 		}
 
-		if(matrix[rowIndex][i] === value) {
+		if (matrix[rowIndex][i] === value) {
 			return false
 		}
 	}
 
 	// check in col
-	for(let i = 0; i < 9; i++) {
-		if(i === rowIndex) {
+	for (let i = 0; i < 9; i++) {
+		if (i === rowIndex) {
 			// skip iteration for that cell
-			continue;
+			continue
 		}
 
-		if(matrix[i][colIndex] === value) {
+		if (matrix[i][colIndex] === value) {
 			return false
 		}
 	}
-	
+
 	// check in the square
 	const square = []
 	const squareRowStart = parseInt(rowIndex / 3) * 3
 	const squareColStart = parseInt(colIndex / 3) * 3
 
-	for(let i = squareRowStart; i < squareRowStart + 3; i++) {
-		for(let j = squareColStart; j < squareColStart + 3; j++) {
-			if(i === rowIndex && j === colIndex) {
+	for (let i = squareRowStart; i < squareRowStart + 3; i++) {
+		for (let j = squareColStart; j < squareColStart + 3; j++) {
+			if (i === rowIndex && j === colIndex) {
 				// again skip iteration for itself
 				continue
 			}
@@ -71,26 +71,25 @@ export const isValidCellValue = (matrix, cell, value) => {
 		}
 	}
 
-	if(square.includes(value)) {
+	if (square.includes(value)) {
 		return false
 	}
 
 	return true
 }
 
-
 // Randomly fills the top-left, middle and bottom-left square of the sudoku matrix.
 export const randomlyFillSquares = (matrix) => {
 	const newMatrix = JSON.parse(JSON.stringify(matrix))
 
-	for(let i = 0; i < 3; i++) {
+	for (let i = 0; i < 3; i++) {
 		const squareRow = i * 3
 		const squareCol = i * 3
 		const random1to9 = shuffle(range(1, 9 + 1))
 		const wrapped = _(random1to9)
 
-		for(let row = squareRow; row < squareRow + 3; row++) {
-			for(let col = squareCol; col < squareCol + 3; col++) {
+		for (let row = squareRow; row < squareRow + 3; row++) {
+			for (let col = squareCol; col < squareCol + 3; col++) {
 				newMatrix[row][col] = wrapped.next().value
 			}
 		}
@@ -99,7 +98,6 @@ export const randomlyFillSquares = (matrix) => {
 	return newMatrix
 }
 
-
 // Does what it says it does and fills the whole matrix with correct values.
 export const solveMatrix = (matrix) => {
 	const newMatrix = JSON.parse(JSON.stringify(matrix))
@@ -107,17 +105,17 @@ export const solveMatrix = (matrix) => {
 	const solver = () => {
 		const cell = getFirstEmptyCell(newMatrix)
 
-		if(cell === null) {
-			return true;
+		if (cell === null) {
+			return true
 		}
 
 		const {row, col} = cell
 
-		for(let v = 1; v <= 9; v++) {
-			if(isValidCellValue(newMatrix, cell, v)) {
+		for (let v = 1; v <= 9; v++) {
+			if (isValidCellValue(newMatrix, cell, v)) {
 				newMatrix[row][col] = v
 
-				if(solver()) {
+				if (solver()) {
 					return true
 				}
 
@@ -139,17 +137,17 @@ export const randomlyRemoveCells = (matrix, count) => {
 	const filledCells = []
 
 	// get all filled cells into the filledCells array
-	for(let i = 0; i < 9; i++) {
-		for(let j = 0; j < 9; j++) {
-			if(matrix[i][j] !== 0) {
+	for (let i = 0; i < 9; i++) {
+		for (let j = 0; j < 9; j++) {
+			if (matrix[i][j] !== 0) {
 				filledCells.push({row: i, col: j})
 			}
 		}
 	}
 
 	// remove cells from the matrix
-	for(let i = 0; i < count; i++) {
-		if(filledCells.length === 0) {
+	for (let i = 0; i < count; i++) {
+		if (filledCells.length === 0) {
 			break
 		}
 
@@ -162,7 +160,7 @@ export const randomlyRemoveCells = (matrix, count) => {
 }
 
 // Generates a sudoku matrix with emptyCellCount empty cells
-export const genSudokuMatrix = async (emptyCellCount) => {
+export const genSudokuMatrix = async (emptyCellCount: number) => {
 	const randomized = randomlyFillSquares(genEmptySudokuMatrix())
 
 	try {
@@ -177,7 +175,6 @@ export const genSudokuMatrix = async (emptyCellCount) => {
 // Validates the whole sudoku matrix for any incorrect cells
 // and return true of false accordingly.
 export const validateSudokuMatrix = (matrix) => {
-
 	// Validates the array of length 9
 	// containing the elements of sudoku form 1 - 9 in any order
 	const validator = (array) => {
@@ -185,14 +182,14 @@ export const validateSudokuMatrix = (matrix) => {
 		const uniqueElArr = array.filter((v, i, arr) => arr.indexOf(v) === i)
 
 		// repeated elements will be caught
-		if(uniqueElArr.length !== 9) {
+		if (uniqueElArr.length !== 9) {
 			return false
 		}
-		
+
 		// value must be through 1 - 9
-		const filter = uniqueElArr.filter(v => (v < 1 || v > 9))
-		
-		if(filter.length > 0) {
+		const filter = uniqueElArr.filter((v) => v < 1 || v > 9)
+
+		if (filter.length > 0) {
 			return false
 		}
 
@@ -200,30 +197,30 @@ export const validateSudokuMatrix = (matrix) => {
 	}
 
 	// validate all the rows
-	for(let rowIndex = 0; rowIndex < 9; rowIndex++) {
+	for (let rowIndex = 0; rowIndex < 9; rowIndex++) {
 		const row = matrix[rowIndex]
 
-		if(!validator(row)) {
+		if (!validator(row)) {
 			return false
 		}
 	}
 
 	// validate all the cols
-	for(let colIndex = 0; colIndex < 9; colIndex++) {
+	for (let colIndex = 0; colIndex < 9; colIndex++) {
 		const col = []
 
-		for(let rowIndex = 0; rowIndex < 9; rowIndex++) {
+		for (let rowIndex = 0; rowIndex < 9; rowIndex++) {
 			col.push(matrix[rowIndex][colIndex])
 		}
 
-		if(!validator(col)) {
+		if (!validator(col)) {
 			return false
 		}
 	}
 
 	// validate all the squares
-	for(let squareRowIndex = 0; squareRowIndex < 3; squareRowIndex++) {
-		for(let squareColIndex = 0; squareColIndex < 3; squareColIndex++) {
+	for (let squareRowIndex = 0; squareRowIndex < 3; squareRowIndex++) {
+		for (let squareColIndex = 0; squareColIndex < 3; squareColIndex++) {
 			const square = []
 
 			const rowStart = squareRowIndex * 3
@@ -231,13 +228,13 @@ export const validateSudokuMatrix = (matrix) => {
 			const colStart = squareColIndex * 3
 			const colEnd = squareColIndex * 3 + 3
 
-			for(let i = rowStart; i < rowEnd; i++) {
-				for(let j = colStart; j < colEnd; j++) {
+			for (let i = rowStart; i < rowEnd; i++) {
+				for (let j = colStart; j < colEnd; j++) {
 					square.push(matrix[i][j])
 				}
 			}
 
-			if(!validator(square)) {
+			if (!validator(square)) {
 				return false
 			}
 		}

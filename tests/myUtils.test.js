@@ -1,4 +1,3 @@
-
 const {formatTime} = require('../src/myUtils')
 
 test('formats seconds corresctly', () => {
