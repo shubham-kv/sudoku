@@ -1,8 +1,8 @@
 import {useCallback} from 'react'
 
-import {useSudokuContext} from 'contexts/SudokuContext'
-import {isValidCellValue} from 'sudokuHelpers'
-import {deepCopy} from 'myUtils'
+import {useSudokuContext} from '../contexts/SudokuContext'
+import {isValidCellValue} from '../sudokuHelpers'
+import {deepCopy} from '../myUtils'
 
 
 export default function SudokuCell(props) {
@@ -89,3 +89,4 @@ export default function SudokuCell(props) {
 		</div>
 	)
 }
+

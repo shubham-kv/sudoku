@@ -1,10 +1,10 @@
 import {forwardRef} from 'react'
 import {animated} from '@react-spring/web'
 
-import {useSudokuContext} from 'contexts/SudokuContext'
-import {formatTime} from 'myUtils'
+import {useSudokuContext} from '../contexts/SudokuContext'
+import {formatTime} from '../myUtils'
 
-import 'styles/win_greet.scss'
+import '../styles/win_greet.scss'
 
 const WinGreet = forwardRef((props, ref) => {
 	const {elapsedTime, genNewGame} = useSudokuContext()
