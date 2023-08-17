@@ -1,14 +1,15 @@
 import {useCallback} from 'react'
 
-import {useSudokuContext} from '../hooks'
+import {useSudokuContext} from '../../hooks'
+import {deepCopy, isValidCellValue} from '../../utils'
 
-import {isValidCellValue} from '../sudokuHelpers'
-import {deepCopy} from '../myUtils'
+import {SudokuCellProps} from './types'
 
-export function SudokuCell(props) {
+import styles from './sudoku-cell.module.scss'
+
+export function SudokuCell(props: SudokuCellProps) {
 	const {row, col, focusedCell, setFocusedCell} = props
 
-	const sudokuContextValue = useSudokuContext()
 	const {
 		selectedValue,
 		setSelectedValue,
@@ -16,7 +17,7 @@ export function SudokuCell(props) {
 		workingMatrix,
 		setWorkingMatrix,
 		gameComplete
-	} = sudokuContextValue
+	} = useSudokuContext()
 
 	const handleCellClick = useCallback(
 		(row: number, col: number) => {
@@ -52,35 +53,35 @@ export function SudokuCell(props) {
 
 	const inputMatrixVal = inputMatrix[row][col]
 	const value = workingMatrix[row][col]
-	const cellClassArr = ['sudoku_cell']
+	const classNames = [styles.sudokuCell]
 
 	if (inputMatrixVal !== 0 || gameComplete) {
-		cellClassArr.push('unmodifiable')
+		classNames.push(styles.unmodifiable)
 	} else {
 		if (value !== 0 && !isValidCellValue(workingMatrix, {row, col}, value)) {
-			cellClassArr.push('incorrect')
+			classNames.push(styles.incorrect)
 		}
 	}
 
 	// focusedCell
 	// the cell in focus while using arrow keys for interaction
 	if (focusedCell && focusedCell.row === row && focusedCell.col === col) {
-		cellClassArr.push('focused')
+		classNames.push(styles.focused)
 	}
 
 	if (selectedValue && selectedValue === value) {
-		cellClassArr.push('highlighted')
+		classNames.push(styles.highlighted)
 	}
 
 	if (gameComplete) {
-		cellClassArr.push('game_complete')
+		classNames.push(styles.gameComplete)
 	}
 
-	const cellClassName = cellClassArr.join(' ')
+	const className = classNames.join(' ')
 
 	return (
 		<div
-			className={cellClassName}
+			className={className}
 			onMouseDown={(e) => e.preventDefault()}
 			onClick={() => handleCellClick(row, col)}
 		>

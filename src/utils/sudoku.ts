@@ -1,9 +1,12 @@
 import _, {random, range, shuffle} from 'lodash'
-import {genEmptySudokuMatrix} from './myUtils'
+import {Cell} from '../types/sudoku'
+
+export const genEmptySudokuMatrix = (): number[][] =>
+	Array(9).fill(Array(9).fill(0))
 
 // Returns the first empty cell (or null otherwise) in the sudoku matrix
 // as an object with 'row' and 'col' keys.
-export const getFirstEmptyCell = (matrix) => {
+export const getFirstEmptyCell = (matrix: number[][]): Cell | null => {
 	for (let i = 0; i < 9; i++) {
 		for (let j = 0; j < 9; j++) {
 			if (matrix[i][j] === 0) {
@@ -11,10 +14,11 @@ export const getFirstEmptyCell = (matrix) => {
 			}
 		}
 	}
+
 	return null
 }
 
-export const getAllEmptyCells = (matrix) => {
+export const getAllEmptyCells = (matrix: number[][]): Cell[] => {
 	const emptyCells = []
 
 	for (let i = 0; i < 9; i++) {
@@ -28,7 +32,11 @@ export const getAllEmptyCells = (matrix) => {
 }
 
 // Checks whether it is correct to put the value in the given cell
-export const isValidCellValue = (matrix, cell, value) => {
+export const isValidCellValue = (
+	matrix: number[][],
+	cell: Cell,
+	value: number
+) => {
 	const rowIndex = cell.row
 	const colIndex = cell.col
 
@@ -58,8 +66,8 @@ export const isValidCellValue = (matrix, cell, value) => {
 
 	// check in the square
 	const square = []
-	const squareRowStart = parseInt(rowIndex / 3) * 3
-	const squareColStart = parseInt(colIndex / 3) * 3
+	const squareRowStart = Math.floor(rowIndex / 3) * 3
+	const squareColStart = Math.floor(colIndex / 3) * 3
 
 	for (let i = squareRowStart; i < squareRowStart + 3; i++) {
 		for (let j = squareColStart; j < squareColStart + 3; j++) {
@@ -79,14 +87,14 @@ export const isValidCellValue = (matrix, cell, value) => {
 }
 
 // Randomly fills the top-left, middle and bottom-left square of the sudoku matrix.
-export const randomlyFillSquares = (matrix) => {
-	const newMatrix = JSON.parse(JSON.stringify(matrix))
+export const randomlyFillSquares = (matrix: number[][]): number[][] => {
+	const newMatrix: number[][] = JSON.parse(JSON.stringify(matrix))
 
 	for (let i = 0; i < 3; i++) {
 		const squareRow = i * 3
 		const squareCol = i * 3
 		const random1to9 = shuffle(range(1, 9 + 1))
-		const wrapped = _(random1to9)
+		const wrapped = _(random1to9) as any
 
 		for (let row = squareRow; row < squareRow + 3; row++) {
 			for (let col = squareCol; col < squareCol + 3; col++) {
@@ -99,10 +107,10 @@ export const randomlyFillSquares = (matrix) => {
 }
 
 // Does what it says it does and fills the whole matrix with correct values.
-export const solveMatrix = (matrix) => {
-	const newMatrix = JSON.parse(JSON.stringify(matrix))
+export const solveMatrix = async (matrix: number[][]): Promise<number[][]> => {
+	const newMatrix: number[][] = JSON.parse(JSON.stringify(matrix))
 
-	const solver = () => {
+	const solver = async (): Promise<boolean> => {
 		const cell = getFirstEmptyCell(newMatrix)
 
 		if (cell === null) {
@@ -115,7 +123,7 @@ export const solveMatrix = (matrix) => {
 			if (isValidCellValue(newMatrix, cell, v)) {
 				newMatrix[row][col] = v
 
-				if (solver()) {
+				if (await solver()) {
 					return true
 				}
 
@@ -126,14 +134,13 @@ export const solveMatrix = (matrix) => {
 		return false
 	}
 
-	return new Promise((resolve) => {
-		solver()
-		resolve(newMatrix)
-	})
+	await solver()
+
+	return newMatrix
 }
 
 // Randomly removes count cells from the given sudoku matrix.
-export const randomlyRemoveCells = (matrix, count) => {
+export const randomlyRemoveCells = (matrix: number[][], count: number) => {
 	const filledCells = []
 
 	// get all filled cells into the filledCells array
@@ -174,10 +181,10 @@ export const genSudokuMatrix = async (emptyCellCount: number) => {
 
 // Validates the whole sudoku matrix for any incorrect cells
 // and return true of false accordingly.
-export const validateSudokuMatrix = (matrix) => {
+export const validateSudokuMatrix = (matrix: number[][]) => {
 	// Validates the array of length 9
-	// containing the elements of sudoku form 1 - 9 in any order
-	const validator = (array) => {
+	// containing the elements of sudoku from 1 - 9 in any order
+	const validator = (array: number[]) => {
 		// unique elements of the array
 		const uniqueElArr = array.filter((v, i, arr) => arr.indexOf(v) === i)
 
