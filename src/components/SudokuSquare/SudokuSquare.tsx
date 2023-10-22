@@ -28,7 +28,7 @@ export function SudokuSquare(props: SudokuSquareProps) {
 		}
 	}
 
-	const cells = cellPositions.map(([row, col], i) => (
+	const cells = cellPositions.map(([row, col]) => (
 		<SudokuCell
 			key={`sudoku_cell_${row}${col}`}
 			row={row}

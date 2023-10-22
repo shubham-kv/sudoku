@@ -163,7 +163,7 @@ export const Sudoku = forwardRef<HTMLDivElement, SudokuProps>((props, ref) => {
 							setFocusedCell(sortedEmptyCells[sortedEmptyCells.length - 1])
 						} else {
 							// find index of the prev empty cell in current col or the last in prev col
-							let index = sortedEmptyCells.findLastIndex(
+							const index = sortedEmptyCells.findLastIndex(
 								(v) => (v.row < row && v.col === col) || v.col < col
 							)
 
