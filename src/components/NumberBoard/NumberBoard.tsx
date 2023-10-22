@@ -16,7 +16,7 @@ export const NumberBoard = forwardRef<HTMLDivElement, NumberBoardProps>(
 		}, [setToggle])
 
 		const handleClick = useCallback(
-			(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, number: number) => {
+			(_: React.MouseEvent<HTMLButtonElement, MouseEvent>, number: number) => {
 				if (selectedValue === number) {
 					setSelectedValue(null)
 				} else {
