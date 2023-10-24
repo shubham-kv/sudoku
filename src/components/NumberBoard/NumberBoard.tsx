@@ -16,7 +16,7 @@ export const NumberBoard = forwardRef<HTMLDivElement, NumberBoardProps>(
 		}, [setToggle])
 
 		const handleClick = useCallback(
-			(_: React.MouseEvent<HTMLButtonElement, MouseEvent>, number: number) => {
+			(number: number) => {
 				if (selectedValue === number) {
 					setSelectedValue(null)
 				} else {
@@ -56,28 +56,26 @@ export const NumberBoard = forwardRef<HTMLDivElement, NumberBoardProps>(
 		const animatedButtons = springs.map((animatedStyles, i) => {
 			const number = i + 1
 			const count = getCountOfNumber(number)
-			const classNames = [styles.numberInput]
+			const classNames = [styles.button]
 
 			if (count === 0) {
-				classNames.push(styles.numberInputFilled)
+				classNames.push(styles.filled)
 			}
 
 			if (selectedValue === number) {
-				classNames.push(styles.numberInputActive)
+				classNames.push(styles.active)
 			}
-
-			const className = classNames.join(' ')
 
 			return (
 				<animated.button
 					key={i}
 					style={animatedStyles}
-					className={className}
-					onClick={(e) => {
+					className={classNames.join(' ')}
+					onClick={() => {
 						if (number === 10) {
 							setSelectedValue(0)
 						} else {
-							handleClick(e, number)
+							handleClick(number)
 						}
 					}}
 				>
@@ -90,7 +88,7 @@ export const NumberBoard = forwardRef<HTMLDivElement, NumberBoardProps>(
 			<animated.div
 				ref={ref}
 				style={props.styles}
-				className={styles.numberBoardRoot}
+				className={styles.container}
 			>
 				{animatedButtons}
 			</animated.div>

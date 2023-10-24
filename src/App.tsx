@@ -1,14 +1,9 @@
-import {SudokuContextProvider} from './contexts'
-import {SudokuRoot} from './components/index'
+import {SudokuRenderer} from './components'
 
 export function App() {
 	return (
 		<div className='app'>
-			<main>
-				<SudokuContextProvider>
-					<SudokuRoot />
-				</SudokuContextProvider>
-			</main>
+			<SudokuRenderer />
 		</div>
 	)
 }

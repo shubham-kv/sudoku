@@ -7,16 +7,17 @@ import {
 } from '@react-spring/web'
 
 import {NumberBoard} from '../NumberBoard'
-import {Sudoku} from '../Sudoku'
+import {SudokuBoard} from '../SudokuBoard'
 import {WinGreet} from '../WinGreet'
 
 import {useSudokuContext} from '../../hooks'
-import {formatTime} from '../../utils'
 
-export function SudokuRoot() {
-	const {elapsedTime, gameComplete} = useSudokuContext()
+import styles from './sudoku-wrapper.module.scss'
 
-	const AnimatedSudoku = animated(Sudoku)
+export function SudokuWrapper() {
+	const {gameComplete} = useSudokuContext()
+
+	const AnimatedSudoku = animated(SudokuBoard)
 	const AnimatedNumberBoard = animated(NumberBoard)
 	const AnimatedWinGreet = animated(WinGreet)
 
@@ -75,11 +76,7 @@ export function SudokuRoot() {
 	)
 
 	return (
-		<>
-			{!gameComplete ? (
-				<div className='time'>{formatTime(elapsedTime)}</div>
-			) : null}
-
+		<div className={styles.wrapper}>
 			{sudokuTransition((animatedProps, item) =>
 				!item ? (
 					<AnimatedSudoku
@@ -96,6 +93,6 @@ export function SudokuRoot() {
 			{winTransition((animatedProps, item) =>
 				item ? <AnimatedWinGreet styles={animatedProps} /> : null
 			)}
-		</>
+		</div>
 	)
 }

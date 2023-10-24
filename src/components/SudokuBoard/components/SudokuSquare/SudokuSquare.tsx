@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 
-import {SudokuCell} from '../SudokuCell'
+import {SudokuCell} from '..'
 import {SudokuSquareProps} from './types'
 
 import styles from './sudoku-square.module.scss'

@@ -1,4 +1,4 @@
-export const deepCopy = (object: any) => JSON.parse(JSON.stringify(object))
+export const deepCopy = <T>(object: T): T => JSON.parse(JSON.stringify(object))
 
 export const isSmallScreen = () => window.screen.width < 480
 
