@@ -1,7 +1,7 @@
 import {useCallback} from 'react'
 
-import {useSudokuContext} from '../../hooks'
-import {deepCopy, isValidCellValue} from '../../utils'
+import {useSudokuContext} from '../../../../hooks'
+import {deepCopy, isValidCellValue} from '../../../../utils'
 
 import {SudokuCellProps} from './types'
 
@@ -77,11 +77,9 @@ export function SudokuCell(props: SudokuCellProps) {
 		classNames.push(styles.gameComplete)
 	}
 
-	const className = classNames.join(' ')
-
 	return (
 		<div
-			className={className}
+			className={classNames.join(' ')}
 			onMouseDown={(e) => e.preventDefault()}
 			onClick={() => handleCellClick(row, col)}
 		>

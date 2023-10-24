@@ -55,7 +55,7 @@ export function SudokuContextProvider(props: PropsWithChildren) {
 	}, [setSelectedValue, setInputMatrix, setWorkingMatrix, setGameComplete])
 
 	const genNewMatrix = useCallback(async () => {
-		const count = 45
+		const count = 1
 		const matrix = await genSudokuMatrix(count)
 		setInputMatrix(matrix)
 		setWorkingMatrix(deepCopy(matrix))

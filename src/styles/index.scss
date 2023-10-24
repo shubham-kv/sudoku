@@ -14,33 +14,11 @@ body {
 	background-color: $background_color;
 }
 
-.app {
-	width: 100vw;
-	min-height: 100vh;
-}
-
-main {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-
-	width: 90%;
-	max-width: 600px;
-	min-height: 100vh;
-	margin: auto;
-}
-
 .time {
 	margin: 0.6rem 0;
 }
 
-@media screen and (min-width: $min_large_device_width) {
-	.input_btn {
-		transition: all 0.2s ease;
-	}
-}
-
-@media screen and (max-width: $min_large_device_width) {
+@media only screen and (max-width: $min_large_device_width) {
 	* {
 		transition: none !important;
 		box-shadow: none !important;

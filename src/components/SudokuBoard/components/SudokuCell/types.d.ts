@@ -1,5 +1,5 @@
 import {Dispatch, SetStateAction} from 'react'
-import {Cell} from '../../types/sudoku'
+import {Cell} from '../../../../types/sudoku'
 
 export type SudokuCellProps = {
 	row: number

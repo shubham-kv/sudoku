@@ -1,12 +1,11 @@
 @import '../../styles/variables.scss';
 
-.sudokuWrapper {
-	max-width: 500px;
-	margin: 3rem 0;
+.container {
+	margin: 3rem;
 	position: relative;
 }
 
-.sudoku {
+.board {
 	max-width: 500px;
 	padding: 0.75rem;
 
@@ -24,7 +23,7 @@
 		transition: all 0.2s ease;
 	}
 
-	&.sudokuActive {
+	&.active {
 		border-color: rgba($primary_color, 0.1);
 		background-color: rgba($primary_color, 0.05);
 		box-shadow:
@@ -94,8 +93,8 @@
 		}
 	}
 
-	&.backgroundBarActive::before,
-	&.backgroundBarActive::after {
+	&.active::before,
+	&.active::after {
 		box-shadow:
 			0 0 5px 1px rgba(white, 0.5),
 			0 0 30px 5px rgba($primary_color, 0.2),
