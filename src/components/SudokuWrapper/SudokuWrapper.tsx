@@ -11,12 +11,11 @@ import {SudokuBoard} from '../SudokuBoard'
 import {WinGreet} from '../WinGreet'
 
 import {useSudokuContext} from '../../hooks'
-import {formatTime} from '../../utils'
 
 import styles from './sudoku-wrapper.module.scss'
 
 export function SudokuWrapper() {
-	const {elapsedTime, gameComplete} = useSudokuContext()
+	const {gameComplete} = useSudokuContext()
 
 	const AnimatedSudoku = animated(SudokuBoard)
 	const AnimatedNumberBoard = animated(NumberBoard)
@@ -78,10 +77,6 @@ export function SudokuWrapper() {
 
 	return (
 		<div className={styles.wrapper}>
-			{!gameComplete ? (
-				<div className='time'>{formatTime(elapsedTime)}</div>
-			) : null}
-
 			{sudokuTransition((animatedProps, item) =>
 				!item ? (
 					<AnimatedSudoku
