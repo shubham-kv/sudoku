@@ -12,6 +12,7 @@
 	user-select: none;
 	border-radius: 50%;
 	font-size: 0.9rem;
+	cursor: pointer;
 
 	@media only screen and (min-width: $min_large_device_width) {
 		width: 2rem;
@@ -39,6 +40,7 @@
 	}
 
 	&.unmodifiable {
+		cursor: default;
 		border: 1px solid rgba(white, 0.1);
 		background-color: rgba(white, 0.1);
 	}
