@@ -1,0 +1,11 @@
+@import '@/styles/variables.scss';
+
+.sudokuSquare {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	gap: 0.25rem;
+
+	@media only screen and (min-width: $min_large_device_width) {
+		gap: 0.5rem;
+	}
+}
