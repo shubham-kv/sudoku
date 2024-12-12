@@ -1,6 +1,6 @@
 export * from './NumberBoard'
 export * from './SudokuBoard'
 export * from './SudokuGameEventListener'
-export * from './SudokuKeyboardEventListener'
+export * from './SudokuKeyEventsListener'
 export * from './SudokuWrapper'
 export * from './WinGreet'

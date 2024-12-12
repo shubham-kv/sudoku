@@ -21,6 +21,7 @@ export function SudokuCell(props: SudokuCellProps) {
 	} = useSudokuGame()!
 
 	const gameComplete = gameState === 'completed'
+	const gameRunning = gameState === 'running'
 
 	const handleCellClick = useCallback(
 		(row: number, col: number) => {
@@ -84,7 +85,7 @@ export function SudokuCell(props: SudokuCellProps) {
 		<div
 			className={classNames.join(' ')}
 			onMouseDown={(e) => e.preventDefault()}
-			onClick={() => handleCellClick(row, col)}
+			{...(gameRunning ? {onClick: () => handleCellClick(row, col)} : {})}
 		>
 			{value ? value : ''}
 		</div>

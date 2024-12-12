@@ -5,10 +5,11 @@ export function App() {
 		<div className='app'>
 			<Game>
 				<Game.Timer />
+				<Game.KeyEventsListener />
 
 				<SudokuGame>
 					<SudokuGame.EventListener />
-					<SudokuGame.KeyboardEventListener />
+					<SudokuGame.KeyEventsListener />
 					<SudokuGame.Root />
 				</SudokuGame>
 			</Game>

@@ -44,6 +44,8 @@ export function SudokuGameEventListener() {
 			switch (gameState) {
 				case 'initial': {
 					await performInitialSetup()
+					setSelectedValue(initialSudokuGameData.selectedValue)
+					setFocusedCell(initialSudokuGameData.focusedCell)
 					setGameState('pre-start')
 					break
 				}
@@ -58,6 +60,11 @@ export function SudokuGameEventListener() {
 						setFocusedCell(null)
 						setGameState('completed')
 					}
+					break
+				}
+				case 'paused': {
+					setSelectedValue(null)
+					setFocusedCell(null)
 					break
 				}
 			}

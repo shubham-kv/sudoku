@@ -1,6 +1,10 @@
 import {PropsWithChildren, useState} from 'react'
 
-import {SudokuGameEventListener, SudokuKeyboardEventListener, SudokuWrapper} from './components'
+import {
+	SudokuGameEventListener,
+	SudokuKeyEventsListener,
+	SudokuWrapper
+} from './components'
 import {SudokuGameContext} from './SudokuGameContext'
 
 import {initialSudokuGameData} from './constants'
@@ -40,4 +44,4 @@ export function SudokuGame(props: PropsWithChildren) {
 
 SudokuGame.Root = SudokuWrapper
 SudokuGame.EventListener = SudokuGameEventListener
-SudokuGame.KeyboardEventListener = SudokuKeyboardEventListener
+SudokuGame.KeyEventsListener = SudokuKeyEventsListener
