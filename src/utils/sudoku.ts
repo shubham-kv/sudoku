@@ -170,13 +170,9 @@ export const randomlyRemoveCells = (matrix: number[][], count: number) => {
 export const genSudokuMatrix = async (emptyCellCount: number) => {
 	const randomized = randomlyFillSquares(genEmptySudokuMatrix())
 
-	try {
-		const matrix = await solveMatrix(randomized)
-		randomlyRemoveCells(matrix, emptyCellCount)
-		return matrix
-	} catch (err) {
-		throw err
-	}
+	const matrix = await solveMatrix(randomized)
+	randomlyRemoveCells(matrix, emptyCellCount)
+	return matrix
 }
 
 // Validates the whole sudoku matrix for any incorrect cells
