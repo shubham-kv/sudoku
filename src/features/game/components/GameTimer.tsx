@@ -19,12 +19,12 @@ export function GameTimer() {
 
 	useEffect(() => {
 		switch (gameState) {
-			case 'started': {
+			case 'initial': {
 				setElapsedTime(0)
-				startTimer()
 				break
 			}
-			case 'playing': {
+			case 'pre-start':
+			case 'running': {
 				startTimer()
 				break
 			}

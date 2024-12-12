@@ -10,19 +10,20 @@ export function Game(props: PropsWithChildren) {
 
 	const value: GameData = {
 		gameState,
+		setGameState,
 		time,
 		setTime,
 		play() {
-			setGameState('playing')
+			setGameState('running')
 		},
 		pause() {
 			setGameState('paused')
 		},
-		new() {
+		newGame() {
 			setGameState('initial')
 		},
 		restart() {
-			setGameState('started')
+			setGameState('pre-start')
 		}
 	}
 
