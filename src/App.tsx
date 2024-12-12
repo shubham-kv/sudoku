@@ -1,9 +1,17 @@
-import {SudokuRenderer} from './components'
+import {Game, SudokuGame} from './features'
 
 export function App() {
 	return (
 		<div className='app'>
-			<SudokuRenderer />
+			<Game>
+				<Game.Timer />
+
+				<SudokuGame>
+					<SudokuGame.EventListener />
+					<SudokuGame.KeyboardEventListener />
+					<SudokuGame.Root />
+				</SudokuGame>
+			</Game>
 		</div>
 	)
 }
