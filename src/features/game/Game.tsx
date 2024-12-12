@@ -1,7 +1,7 @@
 import {PropsWithChildren, useState} from 'react'
 
 import {GameContext} from './GameContext'
-import {GameTimer} from './components'
+import {GameKeyEventsListener, GameTimer} from './components'
 import {GameState, GameData} from './types'
 
 export function Game(props: PropsWithChildren) {
@@ -33,3 +33,4 @@ export function Game(props: PropsWithChildren) {
 }
 
 Game.Timer = GameTimer
+Game.KeyEventsListener = GameKeyEventsListener

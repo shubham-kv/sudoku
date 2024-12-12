@@ -1,7 +1,15 @@
-import {useCallback, useEffect, useState, forwardRef, CSSProperties} from 'react'
+import {
+	useCallback,
+	useEffect,
+	useState,
+	forwardRef,
+	CSSProperties
+} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 
+import {useGame} from '@/features/game'
 import {useSudokuGame} from '@/features/sudoku-game'
+
 import styles from './number-board.module.scss'
 
 type NumberBoardProps = {
@@ -10,8 +18,11 @@ type NumberBoardProps = {
 
 export const NumberBoard = forwardRef<HTMLDivElement, NumberBoardProps>(
 	(props, ref) => {
+		const {gameState} = useGame()!
 		const [toggle, setToggle] = useState(false)
 		const {selectedValue, setSelectedValue, workingMatrix} = useSudokuGame()
+
+		const gameRunning = gameState === 'running'
 
 		useEffect(() => {
 			setToggle(true)
@@ -73,9 +84,7 @@ export const NumberBoard = forwardRef<HTMLDivElement, NumberBoardProps>(
 					key={i}
 					style={animatedStyles}
 					className={classNames.join(' ')}
-					onClick={() => {
-						handleClick(number)
-					}}
+					{...(gameRunning ? {onClick: () => handleClick(number)} : {})}
 				>
 					{number}
 				</animated.button>

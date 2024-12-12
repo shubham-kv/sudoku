@@ -1,11 +1,14 @@
 import range from 'lodash/range'
 import {useCallback, useEffect, useState} from 'react'
 
+import {useGame} from '@/features/game'
 import {useSudokuGame} from '@/features/sudoku-game'
 import {deepCopy, getAllEmptyCells} from '@/utils'
 import {Cell} from '@/types/sudoku'
 
-export function SudokuKeyboardEventListener() {
+export function SudokuKeyEventsListener() {
+	const {gameState} = useGame()!
+
 	const {
 		selectedValue,
 		setSelectedValue,
@@ -188,14 +191,26 @@ export function SudokuKeyboardEventListener() {
 	)
 
 	useEffect(() => {
-		document.addEventListener('keydown', keydownListener)
-		document.addEventListener('keyup', keyupListener)
+		const addEventListeners = () => {
+			document.addEventListener('keydown', keydownListener)
+			document.addEventListener('keyup', keyupListener)
+		}
 
-		return () => {
+		const removeEventListeners = () => {
 			document.removeEventListener('keydown', keydownListener)
 			document.removeEventListener('keyup', keyupListener)
 		}
-	}, [keydownListener, keyupListener])
+
+		if (gameState === 'running') {
+			addEventListeners()
+		} else {
+			removeEventListeners()
+		}
+
+		return () => {
+			removeEventListeners()
+		}
+	}, [gameState, keydownListener, keyupListener])
 
 	return null
 }
