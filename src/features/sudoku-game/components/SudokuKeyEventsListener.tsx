@@ -1,3 +1,5 @@
+'use client'
+
 import range from 'lodash/range'
 import {useCallback, useEffect, useState} from 'react'
 

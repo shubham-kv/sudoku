@@ -94,7 +94,8 @@ export const randomlyFillSquares = (matrix: number[][]): number[][] => {
 		const squareRow = i * 3
 		const squareCol = i * 3
 		const random1to9 = shuffle(range(1, 9 + 1))
-		const wrapped = _(random1to9) as any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const wrapped = _(random1to9) as unknown as any
 
 		for (let row = squareRow; row < squareRow + 3; row++) {
 			for (let col = squareCol; col < squareCol + 3; col++) {

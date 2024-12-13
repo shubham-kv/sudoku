@@ -1,9 +1,11 @@
+'use client'
+
 import {useCallback, useEffect, useRef} from 'react'
 import {useGame} from '../hooks/useGame'
 
 export function GameTimer() {
 	const {gameState, setTime: setElapsedTime} = useGame()!
-	const timerId = useRef<NodeJS.Timeout>()
+	const timerId = useRef<NodeJS.Timeout | undefined>(undefined)
 
 	const startTimer = useCallback(() => {
 		clearInterval(timerId.current)

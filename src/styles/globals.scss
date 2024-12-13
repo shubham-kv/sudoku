@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--neon_purple: 308, 69%, 46%;
+	--primary_color: var(--neon_purple);
+	--error_color: 0, 93%, 51%;
+	--background: 0, 0%, 7%;
+	--surface_color: 0, 0%, 14%;
+
+	--on_primary: 0, 0%, 7%;
+	--on_surface: 0, 0%, 94%;
+	--on_background: 0, 0%, 94%;
+	--on_error: 0, 0%, 94%;
+
+	--foreground_low: var(--on_background), 0.4;
+	--foreground: var(--on_background), 0.6;
+	--foreground_high: var(--on_background), 0.8;
+
+	--min_large_device_width: 480px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+*::selection {
+	background-color: hsla(var(--primary_color), 0.3);
+}
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	color: hsla(var(--foreground));
+	background: hsl(var(--background));
+}
+
+@media only screen and (max-width: 480px) {
+	* {
+		transition: none !important;
+		box-shadow: none !important;
+	}
+}

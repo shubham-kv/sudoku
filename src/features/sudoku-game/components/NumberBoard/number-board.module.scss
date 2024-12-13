@@ -1,5 +1,3 @@
-@import '@/styles/variables.scss';
-
 .container {
 	width: calc(4rem * 6);
 	margin: 0.6rem 0;
@@ -18,32 +16,32 @@
 	background: none;
 
 	font-size: 1.3rem;
-	color: $foreground_nom;
+	color: hsla(var(--foreground));
 	border-radius: 50%;
 	border: 2px solid rgba(white, 0.12);
 	transition: all 0.2s ease;
 	cursor: pointer;
 
 	&.filled {
-		color: $primary_color;
+		color: hsl(var(--primary_color));
 	}
 
 	&:hover {
-		color: $primary_color;
-		border-color: rgb($primary_color, 0.2);
-		background-color: rgb($primary_color, 0.2);
+		color: hsl(var(--primary_color));
+		border-color: hsla(var(--primary_color), 0.2);
+		background-color: hsla(var(--primary_color), 0.2);
 	}
 
 	&:focus-visible {
-		color: $foreground_high;
-		border-color: $primary_color;
-		background-color: rgba($primary_color, 0.4);
+		color: hsla(var(--foreground_high));
+		border-color: hsl(var(--primary_color));
+		background-color: hsla(var(--primary_color), 0.4);
 	}
 
 	&.active {
-		color: $on_primary;
-		border-color: $primary_color;
-		background-color: $primary_color;
-		box-shadow: 0 0 30px 5px rgba($primary_color, 0.6);
+		color: hsl(var(--on_primary));
+		border-color: hsl(var(--primary_color));
+		background-color: hsl(var(--primary_color));
+		box-shadow: 0 0 30px 5px hsla(var(--primary_color), 0.6);
 	}
 }

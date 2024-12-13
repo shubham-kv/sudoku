@@ -1,3 +1,5 @@
+'use client'
+
 import {useEffect, useState, forwardRef, CSSProperties} from 'react'
 import {useSprings, animated} from '@react-spring/web'
 
@@ -17,7 +19,8 @@ export const SudokuBoard = forwardRef<HTMLDivElement, SudokuBoardProps>(
 		const [toggle, setToggle] = useState(false)
 		const {gameState} = useGame()!
 
-		const {selectedValue, focusedCell, setFocusedCell} = useSudokuGame()!
+		const {selectedValue, focusedCell, setFocusedCell, inputMatrix} =
+			useSudokuGame()!
 		const gameComplete = gameState === 'completed'
 
 		const isActive = (selectedValue && selectedValue !== 0) || gameComplete
