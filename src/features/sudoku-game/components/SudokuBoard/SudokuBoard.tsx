@@ -3,30 +3,25 @@ import {useSprings, animated} from '@react-spring/web'
 
 import {useSudokuGame} from '@/features/sudoku-game'
 import {useGame} from '@/features/game'
-import {SudokuSquare} from './components'
+import {Sudoku3x3Grid} from './components'
+import {PropsWithStyle} from '@/types'
 
 import styles from './sudoku-board.module.scss'
 
-type SudokuProps = {
-	wrapperStyles?: CSSProperties | undefined
+type SudokuBoardProps = PropsWithStyle & {
 	backgroundBarStyles?: CSSProperties | undefined
 }
 
-export const SudokuBoard = forwardRef<HTMLDivElement, SudokuProps>(
+export const SudokuBoard = forwardRef<HTMLDivElement, SudokuBoardProps>(
 	(props, ref) => {
 		const [toggle, setToggle] = useState(false)
 		const {gameState} = useGame()!
 
-		const {selectedValue, focusedCell, setFocusedCell, inputMatrix} =
-			useSudokuGame()!
+		const {selectedValue, focusedCell, setFocusedCell} = useSudokuGame()!
 		const gameComplete = gameState === 'completed'
 
 		const isActive = (selectedValue && selectedValue !== 0) || gameComplete
 		const cellPositions: [number, number][] = []
-
-		useEffect(() => {
-			setToggle(true)
-		}, [inputMatrix])
 
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 3; j++) {
@@ -34,39 +29,21 @@ export const SudokuBoard = forwardRef<HTMLDivElement, SudokuProps>(
 			}
 		}
 
-		const squares = cellPositions.map(([row, col]) => (
-			<SudokuSquare
-				key={`sudoku_square_${row}${col}`}
-				squareRow={row}
-				squareCol={col}
-				focusedCell={focusedCell}
-				setFocusedCell={setFocusedCell}
-			/>
-		))
-
-		const springs = useSprings(
-			squares.length,
-			squares.map((_, i) => ({
+		const numberOfGrids = 9
+		const gridSprings = useSprings(
+			numberOfGrids,
+			[...Array(numberOfGrids).fill(0)].map((_, i) => ({
 				opacity: toggle ? '1' : '0',
-				delay: i * 50
+				delay: i * numberOfGrids * 5
 			}))
 		)
 
-		const animatedSquares = springs.map((animatedStyle, i) => (
-			<animated.div
-				key={i}
-				style={animatedStyle}
-			>
-				{squares[i]}
-			</animated.div>
-		))
+		useEffect(() => {
+			setToggle(true)
+		}, [])
 
 		return (
-			<animated.div
-				ref={ref}
-				style={props.wrapperStyles}
-				className={styles.container}
-			>
+			<animated.div ref={ref} style={props.style} className={styles.container}>
 				<animated.div
 					style={props.backgroundBarStyles}
 					className={`${styles.backgroundBar} ${isActive ? styles.active : ''}`}
@@ -78,7 +55,17 @@ export const SudokuBoard = forwardRef<HTMLDivElement, SudokuProps>(
 				/>
 
 				<div className={`${styles.board} ${isActive ? styles.active : ''}`}>
-					{animatedSquares}
+					{gridSprings.map((style, i) => (
+						<animated.div key={i} style={style}>
+							<Sudoku3x3Grid
+								key={`sudoku_square_${cellPositions[i][0]}${cellPositions[i][1]}`}
+								squareRow={cellPositions[i][0]}
+								squareCol={cellPositions[i][1]}
+								focusedCell={focusedCell}
+								setFocusedCell={setFocusedCell}
+							/>
+						</animated.div>
+					))}
 				</div>
 
 				<div className={styles.foregroundBar} />
@@ -87,3 +74,5 @@ export const SudokuBoard = forwardRef<HTMLDivElement, SudokuProps>(
 		)
 	}
 )
+
+SudokuBoard.displayName = 'SudokuBoard'

@@ -77,21 +77,23 @@ export function SudokuWrapper() {
 
 	return (
 		<div className={styles.wrapper}>
-			{sudokuTransition((animatedProps, item) =>
-				!item ? (
-					<AnimatedSudoku
-						wrapperStyles={animatedProps}
-						backgroundBarStyles={bgBarAnimatedProps}
-					/>
-				) : null
-			)}
+			<div className={styles.sudokuBoardWrapper}>
+				{sudokuTransition((animatedProps, item) =>
+					!item ? (
+						<AnimatedSudoku
+							style={animatedProps}
+							backgroundBarStyles={bgBarAnimatedProps}
+						/>
+					) : null
+				)}
+			</div>
 
 			{numberBoardTransition((animatedProps, item) =>
-				!item ? <AnimatedNumberBoard styles={animatedProps} /> : null
+				!item ? <AnimatedNumberBoard style={animatedProps} /> : null
 			)}
 
 			{winTransition((animatedProps, item) =>
-				item ? <AnimatedWinGreet styles={animatedProps} /> : null
+				item ? <AnimatedWinGreet style={animatedProps} /> : null
 			)}
 		</div>
 	)

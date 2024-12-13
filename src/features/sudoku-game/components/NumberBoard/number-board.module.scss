@@ -1,18 +1,18 @@
 @import '@/styles/variables.scss';
 
 .container {
+	width: calc(4rem * 6);
+	margin: 0.6rem 0;
+
 	display: flex;
-	flex-direction: row;
+	gap: 1.2rem;
 	justify-content: center;
 	flex-wrap: wrap;
 }
 
 .button {
-	flex-basis: 20%;
-	max-width: 3rem;
+	width: 3rem;
 	height: 3rem;
-	margin: 0.6rem;
-
 	outline: none;
 	user-select: none;
 	background: none;
