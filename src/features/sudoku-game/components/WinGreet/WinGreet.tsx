@@ -1,25 +1,18 @@
-import {CSSProperties, forwardRef} from 'react'
+import {forwardRef} from 'react'
 import {animated} from '@react-spring/web'
 
 import {useGame} from '@/features/game'
 import {formatTime} from '@/utils'
+import {PropsWithStyle} from '@/types'
 
 import styles from './win-greet.module.scss'
 
-type WinGreetProps = {
-	styles?: CSSProperties | undefined
-}
-
-export const WinGreet = forwardRef<HTMLDivElement, WinGreetProps>(
+export const WinGreet = forwardRef<HTMLDivElement, PropsWithStyle>(
 	(props, ref) => {
 		const {time: elapsedTime, newGame: newGame} = useGame()!
 
 		return (
-			<animated.div
-				ref={ref}
-				style={props.styles}
-				className={styles.winGreet}
-			>
+			<animated.div ref={ref} style={props.style} className={styles.winGreet}>
 				<h1>You Won!</h1>
 				<p>Elapsed time: {`'${formatTime(elapsedTime)}'`}.</p>
 
@@ -30,3 +23,5 @@ export const WinGreet = forwardRef<HTMLDivElement, WinGreetProps>(
 		)
 	}
 )
+
+WinGreet.displayName = 'WinGreet'

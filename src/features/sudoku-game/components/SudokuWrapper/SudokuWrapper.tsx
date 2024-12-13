@@ -80,18 +80,18 @@ export function SudokuWrapper() {
 			{sudokuTransition((animatedProps, item) =>
 				!item ? (
 					<AnimatedSudoku
-						wrapperStyles={animatedProps}
+						style={animatedProps}
 						backgroundBarStyles={bgBarAnimatedProps}
 					/>
 				) : null
 			)}
 
 			{numberBoardTransition((animatedProps, item) =>
-				!item ? <AnimatedNumberBoard styles={animatedProps} /> : null
+				!item ? <AnimatedNumberBoard style={animatedProps} /> : null
 			)}
 
 			{winTransition((animatedProps, item) =>
-				item ? <AnimatedWinGreet styles={animatedProps} /> : null
+				item ? <AnimatedWinGreet style={animatedProps} /> : null
 			)}
 		</div>
 	)
