@@ -17,20 +17,27 @@ type SudokuBoardProps = PropsWithStyle & {
 export const SudokuBoard = forwardRef<HTMLDivElement, SudokuBoardProps>(
 	(props, ref) => {
 		const [toggle, setToggle] = useState(false)
-		const {gameState} = useGame()!
 
-		const {selectedValue, focusedCell, setFocusedCell, inputMatrix} =
-			useSudokuGame()!
-		const gameComplete = gameState === 'completed'
+		const [cellPositions] = useState<[number, number][]>(() => {
+			const cellPositions: [number, number][] = []
 
-		const isActive = (selectedValue && selectedValue !== 0) || gameComplete
-		const cellPositions: [number, number][] = []
-
-		for (let i = 0; i < 3; i++) {
-			for (let j = 0; j < 3; j++) {
-				cellPositions.push([i, j])
+			for (let i = 0; i < 3; i++) {
+				for (let j = 0; j < 3; j++) {
+					cellPositions.push([i, j])
+				}
 			}
-		}
+			return cellPositions
+		})
+
+		const {gameState} = useGame()!
+		const {selectedValue, focusedCell, setFocusedCell} = useSudokuGame()!
+
+		const gameComplete = gameState === 'completed'
+		const isActive = (selectedValue && selectedValue !== 0) || gameComplete
+
+		useEffect(() => {
+			setToggle(true)
+		}, [])
 
 		const numberOfGrids = 9
 		const gridSprings = useSprings(
@@ -40,10 +47,6 @@ export const SudokuBoard = forwardRef<HTMLDivElement, SudokuBoardProps>(
 				delay: i * numberOfGrids * 5
 			}))
 		)
-
-		useEffect(() => {
-			setToggle(true)
-		}, [])
 
 		return (
 			<animated.div ref={ref} style={props.style} className={styles.container}>
