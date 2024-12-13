@@ -77,14 +77,16 @@ export function SudokuWrapper() {
 
 	return (
 		<div className={styles.wrapper}>
-			{sudokuTransition((animatedProps, item) =>
-				!item ? (
-					<AnimatedSudoku
-						style={animatedProps}
-						backgroundBarStyles={bgBarAnimatedProps}
-					/>
-				) : null
-			)}
+			<div className={styles.sudokuBoardWrapper}>
+				{sudokuTransition((animatedProps, item) =>
+					!item ? (
+						<AnimatedSudoku
+							style={animatedProps}
+							backgroundBarStyles={bgBarAnimatedProps}
+						/>
+					) : null
+				)}
+			</div>
 
 			{numberBoardTransition((animatedProps, item) =>
 				!item ? <AnimatedNumberBoard style={animatedProps} /> : null
