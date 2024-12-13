@@ -1,3 +1,5 @@
+'use client'
+
 import {PropsWithChildren, useState} from 'react'
 
 import {GameContext} from './GameContext'

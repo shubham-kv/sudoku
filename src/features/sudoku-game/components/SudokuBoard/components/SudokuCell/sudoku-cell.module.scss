@@ -1,5 +1,3 @@
-@import '@/styles/variables.scss';
-
 .sudokuCell {
 	width: 1.5rem;
 	height: 1.5rem;
@@ -14,7 +12,7 @@
 	font-size: 0.9rem;
 	cursor: pointer;
 
-	@media only screen and (min-width: $min_large_device_width) {
+	@media only screen and (min-width: 480px) {
 		width: 2rem;
 		height: 2rem;
 		font-size: 1.2rem;
@@ -51,33 +49,33 @@
 	}
 
 	&.highlighted {
-		color: $on_primary;
-		background-color: rgba($primary_color, 1);
+		color: hsl(var(--on_primary));
+		background-color: hsla(var(--primary_color), 1);
 	}
 
 	&.highlighted.focused::before {
-		border: 1px solid rgba($primary_color, 0.5);
-		background-color: rgba($primary_color, 0.2);
+		border: 1px solid hsla(var(--primary_color), 0.5);
+		background-color: hsla(var(--primary_color), 0.2);
 	}
 
 	&.incorrect {
-		color: $error_color;
+		color: hsl(var(--error_color));
 	}
 
 	&.incorrect.focused::before {
-		border: 1px solid rgba($error_color, 0.2);
-		background-color: rgba($error_color, 0.1);
+		border: 1px solid hsla(var(--error_color), 0.2);
+		background-color: hsla(var(--error_color), 0.1);
 	}
 
 	&.highlighted.incorrect {
-		background-color: rgba($error_color, 0.2);
+		background-color: hsla(var(--error_color), 0.2);
 	}
 
 	&.gameComplete {
 		background-color: rgba(white, 0.1);
 	}
 
-	@media screen and (min-width: $min_large_device_width) {
-		transition: all 0.4s ease;
-	}
+	// @media screen and (min-width: 480px) {
+	// 	transition: all 0.4s ease;
+	// }
 }
